@@ -66,7 +66,7 @@ public class Main {
                 boolean playing = true;
                 while (playing) {
                     System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
-                    displayCards(houseHand);
+                    displayHouseCards(houseHand);
 
                     System.out.println("===================");
                     System.out.printf("|%-4s%s%-4s|\n", " ", hand.getPlayer(), " ");
@@ -115,18 +115,32 @@ public class Main {
                 }
             }
 
-            //Dealer does their turn
-            while (houseHand.calculateHand() < 21) {
+            //House does their turn
+            while (true) {
                 System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
                 displayCards(houseHand);
                 if (highestPlayerScore == 21) {
                     addRandomCardToHand(houseHand, deck);
+                    System.out.println("Press Enter to play dealer next card...");
+                    scanner.nextLine();
                 } else if (houseHand.calculateHand() > highestPlayerScore) {
                     break;
                 } else if (houseHand.calculateHand() < highestPlayerScore) {
                     addRandomCardToHand(houseHand, deck);
+                    System.out.println("Press Enter to play dealer next card...");
+                    scanner.nextLine();
                 } else {
                     System.out.println("Something went wrong.");
+                }
+                //check if hand has aces, if so change aces value from 11 to 1
+                houseHand.changeAcePoints();
+                if (houseHand.checkIfBusted()) {
+                    displayCards(houseHand);
+                    System.out.println("Total: " + houseHand.calculateHand());
+                    System.out.println("Busted!");
+                    System.out.println("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
                 }
             }
 
@@ -155,22 +169,47 @@ public class Main {
         }
     }
 
+    private static void displayHouseCards(Hand houseHand) {
+        List<Card> hand = houseHand.getHand();
+        constructCard(hand.get(0));
+        constructCard();
+    }
+
     private static void displayCards(Hand hand) {
         for (Card card : hand.getHand()) {
-            // Constructing the top line of the card
-            String top = "┌─────────┐\n";
-
-            // Constructing the middle lines of the card
-            String middle = String.format("│ %-8s│\n", card.getName());
-            middle += "│         │\n";
-
-            // Constructing the bottom lines of the card
-            String bottom = String.format("│       %-2s│\n", card.getName());
-            bottom += "└─────────┘";
-
-            System.out.println(top + middle + bottom);
+            constructCard(card);
         }
         System.out.println("Total: " + hand.calculateHand());
+    }
+
+    private static void constructCard(Card card) {
+        // Constructing the top line of the card
+        String top = "┌─────────┐\n";
+
+        // Constructing the middle lines of the card
+        String middle = String.format("│ %-8s│\n", card.getName());
+        middle += "│         │\n";
+
+        // Constructing the bottom lines of the card
+        String bottom = String.format("│       %-2s│\n", card.getName());
+        bottom += "└─────────┘";
+
+        System.out.println(top + middle + bottom);
+    }
+
+    private static void constructCard() {
+        // Constructing the top line of the card
+        String top = "┌─────────┐\n";
+
+        // Constructing the middle lines of the card
+        String middle = "│         │\n";
+        middle += "│         │\n";
+
+        // Constructing the bottom lines of the card
+        String bottom = "│         │\n";
+        bottom += "└─────────┘";
+
+        System.out.println(top + middle + bottom);
     }
 
     //if house is the winner

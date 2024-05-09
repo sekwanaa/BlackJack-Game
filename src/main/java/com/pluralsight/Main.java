@@ -77,7 +77,7 @@ public class Main {
 
                         if (hand.checkIfBlackJack()) {
                             System.out.println("You've got Blackjack!");
-                            System.out.println("Press Enter to continue...");
+                            System.out.print("Press Enter to continue...");
                             scanner.nextLine();
                             break;
                         }
@@ -100,7 +100,7 @@ public class Main {
                                 displayCards(hand);
                                 System.out.println("Total: " + hand.calculateHand());
                                 System.out.println("Busted!");
-                                System.out.println("Press Enter to continue...");
+                                System.out.print("Press Enter to continue...");
                                 scanner.nextLine();
                                 break;
                             }
@@ -122,26 +122,27 @@ public class Main {
                 while (true) {
                     System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
                     displayCards(houseHand);
-                    if (highestPlayerScore == 21) {
-                        addRandomCardToHand(houseHand, deck);
-                        System.out.println("Press Enter to play dealer next card...");
+                    if (houseHand.checkIfBlackJack())   {
+                        System.out.println("The House got Blackjack!");
+                        System.out.print("Press Enter to continue...");
                         scanner.nextLine();
-                    } else if (houseHand.calculateHand() > highestPlayerScore) {
                         break;
-                    } else if (houseHand.calculateHand() < highestPlayerScore) {
-                        addRandomCardToHand(houseHand, deck);
-                        System.out.println("Press Enter to play dealer next card...");
-                        scanner.nextLine();
                     } else {
-                        System.out.println("Something went wrong.");
+                        houseHand.changeAcePoints();
+                        if (houseHand.calculateHand() < 17) {
+                            addRandomCardToHand(houseHand, deck);
+                            System.out.print("Press Enter to play dealer next card...");
+                            scanner.nextLine();
+                        } else {
+                            break;
+                        }
                     }
                     //check if hand has aces, if so change aces value from 11 to 1
-                    houseHand.changeAcePoints();
                     if (houseHand.checkIfBusted()) {
                         displayCards(houseHand);
                         System.out.println("Total: " + houseHand.calculateHand());
                         System.out.println("Busted!");
-                        System.out.println("Press Enter to continue...");
+                        System.out.print("Press Enter to continue...");
                         scanner.nextLine();
                         break;
                     }
@@ -161,7 +162,7 @@ public class Main {
                 }
 
                 if (houseHand.calculateHand() >= highestPlayerScore && houseHand.calculateHand() <= 21) {
-                    displayWinner(houseHand, playerHands);
+                    displayWinner(houseHand, playerHands, scanner);
                 } else {
                     displayWinner(houseHand, winner, playerHands);
                 }
@@ -233,7 +234,9 @@ public class Main {
     }
 
     //if house is the winner
-    private static void displayWinner(Hand house, List<Hand> playerHands) {
+    private static void displayWinner(Hand house, List<Hand> playerHands, Scanner scanner) {
+        System.out.print("Press Enter to reveal the winners......");
+        scanner.nextLine();
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.printf("""
                 The winner is: %s with %d points

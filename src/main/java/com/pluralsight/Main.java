@@ -7,6 +7,9 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("\n\n\n\n\n+--------Welcome to Sekwanaa's Casino--------+");
+        System.out.println("|==============You are playing:==============|");
+        System.out.println("+------------------BlackJack-----------------+\n");
         //create list of players and ask who is playing. each player is added to the list
         List<String> players = new ArrayList<>();
 
@@ -164,6 +167,7 @@ public class Main {
 
     //if house is the winner
     private static void displayWinner(Hand house, List<Hand> playerHands) {
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.printf("""
                         The winner is: %s with %d points
                         
@@ -180,6 +184,7 @@ public class Main {
 
     //if house is not the winner
     private static void displayWinner(Hand houseHand, List<Hand> winner, List<Hand> playerHands) {
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         if (winner.size() == 1) {
             System.out.printf("""
                         The winner is: %s with %d points

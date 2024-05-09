@@ -1,7 +1,10 @@
 package com.pluralsight.Models;
 
+import com.pluralsight.Main;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Hand {
     private String player;
@@ -32,6 +35,14 @@ public class Hand {
                 card.setPoints(1);
             }
         }
+    }
+
+    public boolean checkIfBusted() {
+        return this.calculateHand() > 21;
+    }
+
+    public boolean checkIfBlackJack() {
+        return this.calculateHand() == 21;
     }
 
     //Getters

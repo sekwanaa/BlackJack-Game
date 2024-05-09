@@ -17,6 +17,9 @@ public class Main {
             addPlayers(scanner, players);
             boolean isAddingPlayers = true;
             while (isAddingPlayers) {
+                if (players.size() == 4) {
+                    break;
+                }
                 System.out.print("Would you like to add another player? (Y/N): ");
                 String addAnotherPlayer = scanner.nextLine().toLowerCase();
 
@@ -69,7 +72,7 @@ public class Main {
                     System.out.printf("|%-4s%s%-4s|\n", " ", hand.getPlayer(), " ");
                     displayCards(hand);
 
-                    if (hand.calculateHand() == 21) {
+                    if (hand.checkIfBlackJack()) {
                         System.out.println("You've got Blackjack!");
                         System.out.println("Press Enter to continue...");
                         scanner.nextLine();
@@ -87,17 +90,15 @@ public class Main {
                             break;
                     }
 
-                    if (hand.calculateHand() > 21) {
+                    if (hand.checkIfBusted()) {
                         //check if hand has aces, if so change aces value from 11 to 1
                         hand.changeAcePoints();
-                        if (hand.calculateHand() > 21) {
+                        if (hand.checkIfBusted()) {
                             displayCards(hand);
                             System.out.println("Total: " + hand.calculateHand());
                             System.out.println("Busted!");
                             System.out.println("Press Enter to continue...");
                             scanner.nextLine();
-                            break;
-                        } else {
                             break;
                         }
                     }

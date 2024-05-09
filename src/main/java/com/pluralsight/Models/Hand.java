@@ -21,9 +21,17 @@ public class Hand {
     public int calculateHand() {
         int handTotal = 0;
         for (Card card : hand) {
-            handTotal += card.points();
+            handTotal += card.getPoints();
         }
         return handTotal;
+    }
+
+    public void changeAcePoints() {
+        for (Card card : hand) {
+            if (card.getName().equals("A")) {
+                card.setPoints(1);
+            }
+        }
     }
 
     //Getters

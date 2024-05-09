@@ -86,13 +86,20 @@ public class Main {
                             playing = false;
                             break;
                     }
+
                     if (hand.calculateHand() > 21) {
-                        displayCards(hand);
-                        System.out.println("Total: " + hand.calculateHand());
-                        System.out.println("Busted!");
-                        System.out.println("Press Enter to continue...");
-                        scanner.nextLine();
-                        break;
+                        //check if hand has aces, if so change aces value from 11 to 1
+                        hand.changeAcePoints();
+                        if (hand.calculateHand() > 21) {
+                            displayCards(hand);
+                            System.out.println("Total: " + hand.calculateHand());
+                            System.out.println("Busted!");
+                            System.out.println("Press Enter to continue...");
+                            scanner.nextLine();
+                            break;
+                        } else {
+                            break;
+                        }
                     }
 
                 }
@@ -153,11 +160,11 @@ public class Main {
             String top = "┌─────────┐\n";
 
             // Constructing the middle lines of the card
-            String middle = String.format("│ %-8s│\n", card.name());
+            String middle = String.format("│ %-8s│\n", card.getName());
             middle += "│         │\n";
 
             // Constructing the bottom lines of the card
-            String bottom = String.format("│       %-2s│\n", card.name());
+            String bottom = String.format("│       %-2s│\n", card.getName());
             bottom += "└─────────┘";
 
             System.out.println(top + middle + bottom);

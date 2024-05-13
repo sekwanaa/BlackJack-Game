@@ -2,6 +2,7 @@ package com.pluralsight.UserInterfaces;
 
 import com.pluralsight.Models.Card;
 import com.pluralsight.Models.Hand;
+import com.pluralsight.Utilities.Utilities;
 
 import java.util.*;
 
@@ -29,16 +30,7 @@ public class GameScreen extends Screen {
             //List to store each player's hand
             List<Hand> playerHands = new ArrayList<>();
             //For each player, create a hand
-            for (String player : players) {
-                Hand hand = new Hand(player);
-
-                //each player is given a hand of cards
-                for (int i = 0; i < 2; i++) {
-                    //use random number generator to pick which card is given to each player.
-                    addRandomCardToHand(hand, deck);
-                }
-                playerHands.add(hand);
-            }
+            dealCardsToHands(deck, playerHands);
 
             Set<Hand> playersWhoDidNotBust = new HashSet<>();
             int highestPlayerScore = 0;
@@ -47,11 +39,13 @@ public class GameScreen extends Screen {
 
                 boolean playing = true;
                 while (playing) {
-                    System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
+                    Utilities.createBigBlankSpace();
+                    System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
                     displayHouseCards(houseHand);
 
-                    System.out.println("===================");
-                    System.out.printf("|%-4s%s%-4s|\n", " ", hand.getPlayer(), " ");
+                    System.out.println(Utilities.createLineofChars(25, '='));
+                    System.out.println(Utilities.centerMessage(String.format("|\t%s\t|", hand.getPlayer()), 25, ' '));
+
                     displayCards(hand);
 
                     if (hand.checkIfBlackJack()) {
@@ -61,16 +55,7 @@ public class GameScreen extends Screen {
                         break;
                     }
 
-                    System.out.println("Would you like to hit or stay?");
-                    String hitOrStay = scanner.nextLine().toLowerCase();
-                    switch (hitOrStay) {
-                        case "hit":
-                            addRandomCardToHand(hand, deck);
-                            break;
-                        case "stay":
-                            playing = false;
-                            break;
-                    }
+                    playing = processHitOrStay(hand, deck, true);
 
                     if (hand.checkIfBusted()) {
                         //check if hand has aces, if so change aces value from 11 to 1
@@ -93,41 +78,14 @@ public class GameScreen extends Screen {
                     if (hand.calculateHand() > highestPlayerScore) {
                         highestPlayerScore = hand.calculateHand();
                     }
-//                    System.out.println("ADDED " + hand.getPlayer() + " " + hand.calculateHand());
                 }
             }
 
             //House does their turn
-            while (true) {
-                System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
-                displayCards(houseHand);
-                if (houseHand.checkIfBlackJack())   {
-                    System.out.println("The House got Blackjack!");
-                    System.out.print("Press Enter to continue...");
-                    scanner.nextLine();
-                    break;
-                } else {
-                    houseHand.changeAcePoints();
-                    if (houseHand.calculateHand() < 17) {
-                        addRandomCardToHand(houseHand, deck);
-                        System.out.print("Press Enter to play dealer next card...");
-                        scanner.nextLine();
-                    } else {
-                        break;
-                    }
-                }
-                //check if hand has aces, if so change aces value from 11 to 1
-                if (houseHand.checkIfBusted()) {
-                    displayCards(houseHand);
-                    System.out.println("Total: " + houseHand.calculateHand());
-                    System.out.println("Busted!");
-                    System.out.print("Press Enter to continue...");
-                    scanner.nextLine();
-                    break;
-                }
-            }
+            housePlaysOutTurn(houseHand, deck);
 
             //calculate cards given to each player. Closest to 21 wins.
+//TODO      fix nested if statements
             List<Hand> winner = new ArrayList<>();
             for (Hand potentiallyWinningHand : playersWhoDidNotBust) {
                 if (winner.isEmpty()) {
@@ -141,28 +99,91 @@ public class GameScreen extends Screen {
             }
 
             if (houseHand.calculateHand() >= highestPlayerScore && houseHand.calculateHand() <= 21) {
-                displayWinner(houseHand, playerHands, scanner);
+                displayWinner(houseHand, playerHands);
             } else {
                 displayWinner(houseHand, winner, playerHands);
             }
 
-            boolean wantsToPlayAgain = false;
-            while (!wantsToPlayAgain) {
-                System.out.print("Would you all like to play again? (Y/N): ");
-                String playAgain = scanner.nextLine().toLowerCase();
-                switch (playAgain) {
-                    case "y":
-                        wantsToPlayAgain = true;
-                        break;
-                    case "n":
-                        wantsToPlayAgain = true;
-                        isPlaying = false;
-                        break;
-                    default:
-                        System.out.println("That is not a valid choice, try again.");
-                        break;
+            isPlaying = checkIfWantsToPlayAgain(isPlaying);
+        }
+    }
+
+    private static boolean checkIfWantsToPlayAgain(boolean isPlaying) {
+        boolean wantsToPlayAgain = false;
+        while (!wantsToPlayAgain) {
+            System.out.print("Would you all like to play again? (Y/N): ");
+            String playAgain = scanner.nextLine().toLowerCase();
+            switch (playAgain) {
+                case "y":
+                    wantsToPlayAgain = true;
+                    break;
+                case "n":
+                    wantsToPlayAgain = true;
+                    isPlaying = false;
+                    break;
+                default:
+                    System.out.println("That is not a valid choice, try again.");
+                    break;
+            }
+        }
+        return isPlaying;
+    }
+
+    private static void housePlaysOutTurn(Hand houseHand, List<Card> deck) {
+        while (true) {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
+            displayCards(houseHand);
+            if (houseHand.checkIfBlackJack())   {
+                System.out.println("The House got Blackjack!");
+                System.out.print("Press Enter to continue...");
+                scanner.nextLine();
+                break;
+            } else {
+                houseHand.changeAcePoints();
+                if (houseHand.calculateHand() < 17) {
+                    addRandomCardToHand(houseHand, deck);
+                    System.out.print("Press Enter to play dealer next card...");
+                    scanner.nextLine();
+                } else {
+                    break;
                 }
             }
+            //check if hand has aces, if so change aces value from 11 to 1
+            if (houseHand.checkIfBusted()) {
+                displayCards(houseHand);
+                System.out.println("Total: " + houseHand.calculateHand());
+                System.out.println("Busted!");
+                System.out.print("Press Enter to continue...");
+                scanner.nextLine();
+                break;
+            }
+        }
+    }
+
+    private static boolean processHitOrStay(Hand hand, List<Card> deck, boolean playing) {
+        System.out.println("Would you like to hit or stay?");
+        String hitOrStay = scanner.nextLine().toLowerCase();
+        switch (hitOrStay) {
+            case "hit":
+                addRandomCardToHand(hand, deck);
+                break;
+            case "stay":
+                playing = false;
+                break;
+        }
+        return playing;
+    }
+
+    private void dealCardsToHands(List<Card> deck, List<Hand> playerHands) {
+        for (String player : players) {
+            Hand hand = new Hand(player);
+
+            //each player is given a hand of cards
+            for (int i = 0; i < 2; i++) {
+                //use random number generator to pick which card is given to each player.
+                addRandomCardToHand(hand, deck);
+            }
+            playerHands.add(hand);
         }
     }
 
@@ -210,7 +231,7 @@ public class GameScreen extends Screen {
     }
 
     //if house is the winner
-    private static void displayWinner(Hand house, List<Hand> playerHands, Scanner scanner) {
+    private static void displayWinner(Hand house, List<Hand> playerHands) {
         System.out.print("Press Enter to reveal the winners......");
         scanner.nextLine();
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");

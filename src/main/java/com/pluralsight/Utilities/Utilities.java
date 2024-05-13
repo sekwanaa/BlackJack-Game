@@ -10,23 +10,13 @@ public class Utilities {
         int leftPadding = totalPadding / 2;
         int rightPadding = totalPadding - leftPadding;
 
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < leftPadding; i++) {
-            builder.append(padChar);
-        }
-        builder.append(message);
-        for (int i = 0; i < rightPadding; i++) {
-            builder.append(padChar);
-        }
-        return builder.toString();
+        return String.valueOf(padChar).repeat(Math.max(0, leftPadding)) +
+                message +
+                String.valueOf(padChar).repeat(Math.max(0, rightPadding));
     }
 
     public static String createLineofChars(int width, char fillChar) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < width; i++) {
-            builder.append(fillChar);
-        }
-        return builder.toString();
+        return String.valueOf(fillChar).repeat(Math.max(0, width));
     }
 
     public static void createBigBlankSpace() {

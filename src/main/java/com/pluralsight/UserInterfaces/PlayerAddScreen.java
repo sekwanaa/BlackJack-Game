@@ -2,7 +2,6 @@ package com.pluralsight.UserInterfaces;
 
 import com.pluralsight.Utilities.Utilities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerAddScreen extends Screen{

@@ -1,14 +1,11 @@
 package com.pluralsight.Models;
 
-import com.pluralsight.Main;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Hand {
-    private String player;
-    private List<Card> hand;
+    private final String player;
+    private final List<Card> hand;
 
     public Hand(String playerName) {
         this.player = playerName;
@@ -53,10 +50,6 @@ public class Hand {
 
     public String getPlayer() {
         return this.player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
     }
 
     @Override

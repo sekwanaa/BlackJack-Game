@@ -55,7 +55,7 @@ public class GameScreen extends Screen {
                         break;
                     }
 
-                    playing = processHitOrStay(hand, deck, true);
+                    playing = processHitOrStay(hand, deck);
 
                     if (hand.checkIfBusted()) {
                         //check if hand has aces, if so change aces value from 11 to 1
@@ -104,29 +104,24 @@ public class GameScreen extends Screen {
                 displayWinner(houseHand, winner, playerHands);
             }
 
-            isPlaying = checkIfWantsToPlayAgain(isPlaying);
+            isPlaying = checkIfWantsToPlayAgain();
         }
     }
 
-    private static boolean checkIfWantsToPlayAgain(boolean isPlaying) {
-        boolean wantsToPlayAgain = false;
-        while (!wantsToPlayAgain) {
+    private static boolean checkIfWantsToPlayAgain() {
+        while (true) {
             System.out.print("Would you all like to play again? (Y/N): ");
             String playAgain = scanner.nextLine().toLowerCase();
             switch (playAgain) {
                 case "y":
-                    wantsToPlayAgain = true;
-                    break;
+                    return true;
                 case "n":
-                    wantsToPlayAgain = true;
-                    isPlaying = false;
-                    break;
+                    return false;
                 default:
                     System.out.println("That is not a valid choice, try again.");
                     break;
             }
         }
-        return isPlaying;
     }
 
     private static void housePlaysOutTurn(Hand houseHand, List<Card> deck) {
@@ -160,7 +155,7 @@ public class GameScreen extends Screen {
         }
     }
 
-    private static boolean processHitOrStay(Hand hand, List<Card> deck, boolean playing) {
+    private static boolean processHitOrStay(Hand hand, List<Card> deck) {
         System.out.println("Would you like to hit or stay?");
         String hitOrStay = scanner.nextLine().toLowerCase();
         switch (hitOrStay) {
@@ -168,10 +163,12 @@ public class GameScreen extends Screen {
                 addRandomCardToHand(hand, deck);
                 break;
             case "stay":
-                playing = false;
+                return false;
+            default:
+                System.out.println("That's not a valid choice, please enter 'hit' or 'stay'...");
                 break;
         }
-        return playing;
+        return true;
     }
 
     private void dealCardsToHands(List<Card> deck, List<Hand> playerHands) {

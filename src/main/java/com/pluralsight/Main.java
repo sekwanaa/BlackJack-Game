@@ -1,7 +1,5 @@
 package com.pluralsight;
 
-import com.pluralsight.Models.Card;
-import com.pluralsight.Models.Hand;
 import com.pluralsight.UserInterfaces.GameScreen;
 import com.pluralsight.UserInterfaces.PlayerAddScreen;
 

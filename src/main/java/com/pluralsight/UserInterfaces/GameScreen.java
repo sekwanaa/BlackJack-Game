@@ -2,6 +2,7 @@ package com.pluralsight.UserInterfaces;
 
 import com.pluralsight.Models.Card;
 import com.pluralsight.Models.Hand;
+import com.pluralsight.Models.Player;
 import com.pluralsight.Utilities.Utilities;
 
 import java.util.*;
@@ -9,7 +10,7 @@ import java.util.*;
 public class GameScreen extends Screen {
 
 
-    public GameScreen(List<String> players) {
+    public GameScreen(List<Player> players) {
         super(players);
     }
 
@@ -22,26 +23,29 @@ public class GameScreen extends Screen {
 //TODO      Maybe create 5 decks and use 5 decks so that players can't count cards.
             List<Card> deck = Card.createDeck();
 
-            //Creating the house hand
-            Hand houseHand = new Hand("House");
-            addRandomCardToHand(houseHand, deck);
-            addRandomCardToHand(houseHand, deck);
 
-            //List to store each player's hand
-            List<Hand> playerHands = new ArrayList<>();
+            //Creating new player which is the house
+            Player house = new Player("House");
+            house.createHand(deck);
+
+
             //For each player, create a hand
-            dealCardsToHands(deck, playerHands);
+            for (Player player : players) {
+                player.createHand(deck);
+            }
 
-            Set<Hand> playersWhoDidNotBust = new HashSet<>();
             int highestPlayerScore = 0;
 
-            for (Hand hand : playerHands) {
+            //For each player, have them play out their turn against the house.
+//TODO      THIS I NEED TO DO NEXT
+
+            for (Player player : players) {
 
                 boolean playing = true;
                 while (playing) {
                     Utilities.createBigBlankSpace();
                     System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
-                    displayHouseCards(houseHand);
+                    displayHouseCards(house.getHand());
 
                     System.out.println(Utilities.createLineofChars(25, '='));
                     System.out.println(Utilities.centerMessage(String.format("|\t%s\t|", hand.getPlayer()), 25, ' '));
@@ -82,7 +86,7 @@ public class GameScreen extends Screen {
             }
 
             //House does their turn
-            housePlaysOutTurn(houseHand, deck);
+            housePlaysOutTurn(house.getHand(), deck);
 
             //calculate cards given to each player. Closest to 21 wins.
 //TODO      fix nested if statements
@@ -98,10 +102,10 @@ public class GameScreen extends Screen {
                 }
             }
 
-            if (houseHand.calculateHand() >= highestPlayerScore && houseHand.calculateHand() <= 21) {
-                displayWinner(houseHand, playerHands);
+            if (house.getHand().calculateHand() >= highestPlayerScore && house.getHand().calculateHand() <= 21) {
+                displayWinner(house.getHand(), playerHands);
             } else {
-                displayWinner(houseHand, winner, playerHands);
+                displayWinner(house.getHand(), winner, playerHands);
             }
 
             isPlaying = checkIfWantsToPlayAgain();
@@ -169,19 +173,6 @@ public class GameScreen extends Screen {
                 break;
         }
         return true;
-    }
-
-    private void dealCardsToHands(List<Card> deck, List<Hand> playerHands) {
-        for (String player : players) {
-            Hand hand = new Hand(player);
-
-            //each player is given a hand of cards
-            for (int i = 0; i < 2; i++) {
-                //use random number generator to pick which card is given to each player.
-                addRandomCardToHand(hand, deck);
-            }
-            playerHands.add(hand);
-        }
     }
 
     private static void displayHouseCards(Hand houseHand) {
@@ -286,13 +277,6 @@ public class GameScreen extends Screen {
             }
         }
         return nonMatchingItems;
-    }
-
-
-    private static void addRandomCardToHand(Hand hand, List<Card> deck) {
-        int index = (int) (Math.random() * deck.size() - 1) + 1;
-        hand.addCard(deck.get(index));
-        deck.remove(index);
     }
 
     //Getters and Setters

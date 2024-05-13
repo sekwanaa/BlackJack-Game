@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-    private final String player;
     private final List<Card> hand;
 
-    public Hand(String playerName) {
-        this.player = playerName;
+    public Hand() {
         this.hand = new ArrayList<>();
     }
 
@@ -42,14 +40,16 @@ public class Hand {
         return this.calculateHand() == 21;
     }
 
+    public void addRandomCardToHand(List<Card> deck) {
+        int randomIndex = (int) (Math.random() * deck.size() - 1) + 1;
+        addCard(deck.get(randomIndex));
+        deck.remove(randomIndex);
+    }
+
     //Getters
 
     public List<Card> getHand() {
         return this.hand;
-    }
-
-    public String getPlayer() {
-        return this.player;
     }
 
     @Override

@@ -6,7 +6,6 @@ public class Player {
     private final String name;
     private Hand hand = new Hand();
     private boolean busted = false;
-    private int score = 0;
 
     public Player(String name) {
         this.name = name;
@@ -19,7 +18,13 @@ public class Player {
         hand.addRandomCardToHand(deck);
     }
 
+    public int getScore() {
+        return hand.calculateHand();
+    }
+
+
     //Getters and Setters
+
     public String getName() {
         return name;
     }
@@ -40,11 +45,5 @@ public class Player {
         this.busted = busted;
     }
 
-    public int getScore() {
-        return score;
-    }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
 }

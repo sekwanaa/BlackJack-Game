@@ -15,8 +15,8 @@ public class Utilities {
                 String.valueOf(padChar).repeat(Math.max(0, rightPadding));
     }
 
-    public static String createLineofChars(int width, char fillChar) {
-        return String.valueOf(fillChar).repeat(Math.max(0, width));
+    public static void createLineofChars(int width, char fillChar) {
+        System.out.println(String.valueOf(fillChar).repeat(Math.max(0, width)));
     }
 
     public static void createBigBlankSpace() {

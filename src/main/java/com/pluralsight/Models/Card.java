@@ -12,6 +12,8 @@ public class Card {
         this.name = name;
         this.points = points;
     }
+
+    //Methods
     public static List<Card> createDeck() {
         List<Card> deck = new ArrayList<>();
 
@@ -34,6 +36,38 @@ public class Card {
         return deck;
     }
 
+    public void constructCard() {
+        // Constructing the top line of the card
+        String top = "┌─────────┐\n";
+
+        // Constructing the middle lines of the card
+        String middle = String.format("│ %-8s│\n", getName());
+        middle += "│         │\n";
+
+        // Constructing the bottom lines of the card
+        String bottom = String.format("│       %-2s│\n", getName());
+        bottom += "└─────────┘";
+
+        System.out.println(top + middle + bottom);
+    }
+
+    public static void constructBlankCard() {
+        // Constructing the top line of the card
+        String top = "┌─────────┐\n";
+
+        // Constructing the middle lines of the card
+        String middle = "│         │\n";
+        middle += "│         │\n";
+
+        // Constructing the bottom lines of the card
+        String bottom = "│         │\n";
+        bottom += "└─────────┘";
+
+        System.out.println(top + middle + bottom);
+    }
+
+
+    //Getters and Setters
     public String getName() {
         return name;
     }

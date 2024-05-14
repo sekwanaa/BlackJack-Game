@@ -46,6 +46,22 @@ public class Hand {
         deck.remove(randomIndex);
     }
 
+    public void displayHouseCards() {
+        hand.get(0).constructCard();
+        Card.constructBlankCard();
+    }
+
+    public void displayCards() {
+        for (Card card : hand) {
+            card.constructCard();
+        }
+        System.out.println("Total: " + calculateHand());
+    }
+
+    public void clearHand() {
+        hand.clear();
+    }
+
     //Getters
 
     public List<Card> getHand() {

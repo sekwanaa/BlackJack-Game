@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Player {
     private final String name;
-    private Hand hand;
+    private Hand hand = new Hand();
     private boolean busted = false;
     private int score = 0;
 

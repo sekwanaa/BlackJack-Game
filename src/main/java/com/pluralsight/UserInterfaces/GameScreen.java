@@ -16,56 +16,54 @@ public class GameScreen extends Screen {
 
     //Methods
     public void display() {
-        boolean isPlaying = true;
-        while (isPlaying) {
-
-            //create an array of shuffled cards
+        //create an array of shuffled cards
 //TODO      Maybe create 5 decks and use 5 decks so that players can't count cards.
-            List<Card> deck = Card.createDeck();
+        List<Card> deck = Card.createDeck();
 
 
-            //Creating new player which is the house
-            Player house = new Player("House");
-            house.createHand(deck);
+        //Creating new player which is the house
+        Player house = new Player("House");
+        house.createHand(deck);
 
 
-            //For each player, create a hand
-            for (Player player : players) {
-                player.createHand(deck);
-            }
+        //For each player, create a hand
+        for (Player player : players) {
+            player.createHand(deck);
+        }
 
-            //Get bets for each player
-            getBets();
+        //Get bets for each player
+        getBets();
 
-            //For each player, have them play out their turn against the house.
-            playersPlayOutTurn(house, deck);
+        //For each player, have them play out their turn against the house.
+        playersPlayOutTurn(house, deck);
 
-            //House does their turn
-            housePlaysOutTurn(house, deck);
+        //House does their turn
+        housePlaysOutTurn(house, deck);
 
             /*players vs house, if anyone has higher than the house they win.
             anyone who draws with the house gets their money back
             if everyone busts and house also busts, no one wins, but you dont get your money back.*/
-            Map<Player, String> winnersOrDraws = calculateIfHouseWon(house);
+        Map<Player, String> winnersOrDraws = calculateIfHouseWon(house);
 
-            if (winnersOrDraws == null) {
-                displayWinner(house);
-            } else {
-                players.add(house);
-                displayWinnersAndOrDraws(winnersOrDraws);
-            }
-
-            players.remove(house);
-            isPlaying = checkIfWantsToPlayAgain();
+        if (winnersOrDraws == null) {
+            displayWinner(house);
+        } else {
+            players.add(house);
+            displayWinnersAndOrDraws(winnersOrDraws);
         }
+
+        players.remove(house);
+        reset();
     }
 
 
     //Methods
-
     private void getBets() {
         for (Player player : players) {
             double availablePoints = player.getPoints();
+            if (player.getPoints() <= 0) {
+                continue;
+            }
 
             Utilities.createBigBlankSpace();
             System.out.println(Utilities.centerMessage(String.format("%s", player.getName()), 46, ' '));
@@ -93,6 +91,10 @@ public class GameScreen extends Screen {
 
     private void playersPlayOutTurn(Player house, List<Card> deck) {
         for (Player player : players) {
+            if (player.getPoints() <= 0) {
+                System.out.println("\n\nYou've lost all your points, loser.\n\n");
+                continue;
+            }
             Hand hand = player.getHand();
 
             boolean playing = true;
@@ -180,10 +182,13 @@ public class GameScreen extends Screen {
             if ((house.isBusted() && !player.isBusted()) || (!player.isBusted() && player.getScore() > house.getScore())) {
                 player.processWin();
                 winnersOrDraws.put(player, "winner");
+                continue;
             } else if (!player.isBusted() && player.getScore() == house.getScore()) {
                 player.processDraw();
                 winnersOrDraws.put(player, "draw");
+                continue;
             }
+            player.processLoss();
         }
 
         if (winnersOrDraws.isEmpty()) {
@@ -194,6 +199,7 @@ public class GameScreen extends Screen {
 
 
     //if house is the winner
+
     private void displayWinner(Player house) {
         System.out.print("Press Enter to reveal the winners......");
         scanner.nextLine();
@@ -214,8 +220,8 @@ public class GameScreen extends Screen {
             }
         }
     }
-
     //if house is not the winner
+
     private void displayWinnersAndOrDraws(Map<Player, String> winnersAndOrDraws) {
         Utilities.createBigBlankSpace();
         for (Map.Entry<Player, String> playerStringEntry : winnersAndOrDraws.entrySet())
@@ -252,22 +258,10 @@ public class GameScreen extends Screen {
         return nonMatchingItems;
     }
 
-    private boolean checkIfWantsToPlayAgain() {
-        while (true) {
-            System.out.print("Would you all like to play again? (Y/N): ");
-            String playAgain = scanner.nextLine().toLowerCase();
-            switch (playAgain) {
-                case "y":
-                    for (Player player : players) {
-                        player.getHand().clearHand();
-                    }
-                    return true;
-                case "n":
-                    return false;
-                default:
-                    System.out.println("That is not a valid choice, try again.");
-                    break;
-            }
+    private void reset() {
+        for (Player player : players) {
+            player.getHand().clearHand();
+            player.setBusted(false);
         }
     }
 

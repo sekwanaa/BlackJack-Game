@@ -22,15 +22,38 @@ public class Main {
             PlayerAddScreen playerAddScreen = new PlayerAddScreen(players);
             playerAddScreen.display();
 
-            // Screen to ask each player how many points they would like to wager, for now can wager any points
-            PointsScreen pointsScreen = new PointsScreen(players);
-            pointsScreen.display();
+                // Screen to ask each player how many points they would like to wager, for now can wager any points
+                PointsScreen pointsScreen = new PointsScreen(players);
+                pointsScreen.display();
 
-            //Game screen to actually play out the game of blackjack
-            GameScreen gameScreen = new GameScreen(players);
-            gameScreen.display();
+            boolean isPlaying = true;
+            while (isPlaying) {
+                //Game screen to actually play out the game of blackjack
+                GameScreen gameScreen = new GameScreen(players);
+                gameScreen.display();
+
+                isPlaying = checkIfWantsToPlayAgain();
+            }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean checkIfWantsToPlayAgain() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("Would you all like to play again? (Y/N): ");
+            String playAgain = scanner.nextLine().toLowerCase();
+            switch (playAgain) {
+                case "y":
+                    return true;
+                case "n":
+                    return false;
+                default:
+                    System.out.println("That is not a valid choice, try again.");
+                    break;
+            }
         }
     }
 }

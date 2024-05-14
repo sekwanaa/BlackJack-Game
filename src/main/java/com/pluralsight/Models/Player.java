@@ -21,7 +21,6 @@ public class Player {
     }
 
     public void bet(double betAmount) {
-        this.points -= betAmount;
         this.originalBetAmount = betAmount;
     }
 
@@ -37,6 +36,9 @@ public class Player {
         this.points += originalBetAmount;
     }
 
+    public void processLoss() {
+        this.points -= originalBetAmount;
+    }
 
     //Getters and Setters
     public int getScore() {

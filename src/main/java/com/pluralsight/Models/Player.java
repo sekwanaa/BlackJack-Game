@@ -21,22 +21,24 @@ public class Player {
     }
 
     public void bet(double betAmount) {
-        this.points -= betAmount;
         this.originalBetAmount = betAmount;
     }
 
     public void processBlackJack() {
-        this.points += originalBetAmount + (originalBetAmount * 1.5);
+        this.points += (originalBetAmount * 1.5);
     }
 
     public void processWin() {
-        this.points += originalBetAmount * 2;
-    }
-
-    public void processDraw() {
         this.points += originalBetAmount;
     }
 
+    public void processDraw() {
+        this.points += 0;
+    }
+
+    public void processLoss() {
+        this.points -= originalBetAmount;
+    }
 
     //Getters and Setters
     public int getScore() {
@@ -65,5 +67,9 @@ public class Player {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public double getBetAmount() {
+        return originalBetAmount;
     }
 }

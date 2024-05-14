@@ -41,7 +41,8 @@ public class Hand {
         return this.calculateHand() > 21;
     }
 
-    public boolean checkIfBlackJack() {
+    public boolean checkIfBlackJack(int turn) {
+        if (turn != 1) return false;
         return this.calculateHand() == 21;
     }
 

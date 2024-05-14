@@ -53,7 +53,8 @@ public class GameScreen extends Screen {
         }
 
         players.remove(house);
-        reset();
+        List<Player> playersWithNoMoney = filterBrokePlayers();
+        reset(playersWithNoMoney);
     }
 
 
@@ -71,20 +72,26 @@ public class GameScreen extends Screen {
 
             while (true) {
                 System.out.printf("""
-                        How many would you like to bet?
-                        Current points: %.2f
+                        How much would you like to bet?
+                        Available funds: $%.2f
                         
-                        Enter amount here:\s""", availablePoints);
-                double betAmount = scanner.nextDouble();
-                scanner.nextLine();
+                        Enter amount here: $""", availablePoints);
+                if (scanner.hasNextDouble()) {
+                    double betAmount = scanner.nextDouble();
+                    scanner.nextLine();
 
-                if (betAmount > availablePoints || betAmount < 0) {
-                    System.err.println("Please bet within how many points you have...");
-                    System.out.println();
+                    if (betAmount > availablePoints || betAmount < 0) {
+                        System.err.println("Clearly you don't have that much money...");
+                        System.out.println();
+                    } else {
+                        player.bet(betAmount);
+                        break;
+                    }
                 } else {
-                    player.bet(betAmount);
-                    break;
+                    scanner.nextLine();
+                    System.out.println("Please enter a valid input type...");
                 }
+
             }
         }
     }
@@ -92,11 +99,12 @@ public class GameScreen extends Screen {
     private void playersPlayOutTurn(Player house, List<Card> deck) {
         for (Player player : players) {
             if (player.getPoints() <= 0) {
-                System.out.println("\n\nYou've lost all your points, loser.\n\n");
+                System.out.println("\n\nYou've lost all your money, loser.\n\n");
                 continue;
             }
             Hand hand = player.getHand();
 
+            int turn = 1;
             boolean playing = true;
             while (playing) {
                 Utilities.createBigBlankSpace();
@@ -104,13 +112,21 @@ public class GameScreen extends Screen {
                 house.getHand().displayHouseCards();
 
                 Utilities.createLineofChars(25, '=');
-                System.out.println(Utilities.centerMessage(String.format("| %s : %.2fpts |", player.getName(), player.getPoints()), 25, ' '));
+                System.out.println(Utilities.centerMessage(String.format("| %s : $%.2f |", player.getName(), player.getPoints()), 25, ' '));
+                System.out.println(Utilities.centerMessage(String.format("Current Bet: $%.2f", player.getBetAmount()), 25, ' '));
 
                 hand.displayCards();
 
-                if (hand.checkIfBlackJack()) {
+                if (hand.checkIfBlackJack(turn)) {
                     System.out.println("You've got Blackjack!");
                     player.processBlackJack();
+                    System.out.print("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
+                }
+
+                if (hand.calculateHand() == 21) {
+                    System.out.println("You've got 21!");
                     System.out.print("Press Enter to continue...");
                     scanner.nextLine();
                     break;
@@ -126,6 +142,7 @@ public class GameScreen extends Screen {
                     scanner.nextLine();
                     break;
                 }
+                turn++;
             }
         }
     }
@@ -148,10 +165,11 @@ public class GameScreen extends Screen {
 
     private void housePlaysOutTurn(Player house, List<Card> deck) {
         Hand houseHand = house.getHand();
+        int turn = 1;
         while (true) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
             houseHand.displayCards();
-            if (houseHand.checkIfBlackJack()) {
+            if (houseHand.checkIfBlackJack(turn)) {
                 System.out.println("The House got Blackjack!");
                 System.out.print("Press Enter to continue...");
                 scanner.nextLine();
@@ -159,6 +177,7 @@ public class GameScreen extends Screen {
             } else {
                 if (houseHand.calculateHand() < 17) {
                     houseHand.addRandomCardToHand(deck);
+                    turn++;
                     System.out.print("Press Enter to play dealer next card...");
                     scanner.nextLine();
                 } else {
@@ -258,7 +277,20 @@ public class GameScreen extends Screen {
         return nonMatchingItems;
     }
 
-    private void reset() {
+    private List<Player> filterBrokePlayers() {
+        List<Player> brokePlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (player.getPoints() <= 0) {
+                brokePlayers.add(player);
+            }
+        }
+        return brokePlayers;
+    }
+
+    private void reset(List<Player> brokePlayers) {
+        for (Player brokePlayer : brokePlayers) {
+            players.remove(brokePlayer);
+        }
         for (Player player : players) {
             player.getHand().clearHand();
             player.setBusted(false);

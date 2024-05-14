@@ -25,15 +25,15 @@ public class Player {
     }
 
     public void processBlackJack() {
-        this.points += originalBetAmount + (originalBetAmount * 1.5);
+        this.points += (originalBetAmount * 1.5);
     }
 
     public void processWin() {
-        this.points += originalBetAmount * 2;
+        this.points += originalBetAmount;
     }
 
     public void processDraw() {
-        this.points += originalBetAmount;
+        this.points += 0;
     }
 
     public void processLoss() {
@@ -67,5 +67,9 @@ public class Player {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public double getBetAmount() {
+        return originalBetAmount;
     }
 }

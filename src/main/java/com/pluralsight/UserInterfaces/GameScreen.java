@@ -37,82 +37,89 @@ public class GameScreen extends Screen {
             int highestPlayerScore = 0;
 
             //For each player, have them play out their turn against the house.
-//TODO      THIS I NEED TO DO NEXT
 
-            for (Player player : players) {
-
-                Hand hand = player.getHand();
-                boolean playing = true;
-                while (playing) {
-                    Utilities.createBigBlankSpace();
-                    System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
-                    house.getHand().displayHouseCards();
-
-                    Utilities.createLineofChars(25, '=');
-                    System.out.println(Utilities.centerMessage(String.format("|\t%s\t|", player.getName()), 25, ' '));
-
-                    player.getHand().displayCards();
-
-                    if (hand.checkIfBlackJack()) {
-                        highestPlayerScore = player.getScore();
-                        System.out.println("You've got Blackjack!");
-                        System.out.print("Press Enter to continue...");
-                        scanner.nextLine();
-                        break;
-                    }
-
-                    playing = processHitOrStay(hand, deck);
-
-                    if (hand.checkIfBusted()) {
-                        //check if hand has aces, if so change aces value from 11 to 1
-                        hand.changeAcePoints();
-                        if (hand.checkIfBusted()) {
-                            hand.displayCards();
-                            player.setBusted(true);
-                            System.out.println("Total: " + hand.calculateHand());
-                            System.out.println("Busted!");
-                            System.out.print("Press Enter to continue...");
-                            scanner.nextLine();
-                            break;
-                        }
-                    }
-
-                }
-
-                if (hand.calculateHand() > highestPlayerScore && hand.calculateHand() <= 21) {
-                    highestPlayerScore = hand.calculateHand();
-                }
-                // if hand total is more than 21 (did bust)
-//                if (hand.calculateHand() > 21) {
-//                    player.setBusted(true);
-//                }
-            }
+            highestPlayerScore = playersPlayOutTurn(house, highestPlayerScore, deck);
 
             //House does their turn
             housePlaysOutTurn(house, deck);
 
             //calculate cards given to each player. Closest to 21 wins.
-            List<Player> winner = new ArrayList<>();
-            //Iterate through players, if they have a higher score than the current winner(s)
-            //clear the List of winners and add the current player.
-            for (Player player : players) {
-                if (player.getScore() == highestPlayerScore) {
-                    winner.add(player);
-                }
-            }
+            List<Player> winner = getWinners(highestPlayerScore);
 
-            if ((winner.isEmpty() || (house.getHand().calculateHand() > highestPlayerScore && (house.getHand().calculateHand() <= 21)))) {
-                displayWinner(house);
-            } else if (house.getScore() == highestPlayerScore) {
-                displayDraw(winner);
-            }else {
-                players.add(house);
-                displayWinner(winner);
-            }
+            calculateIfHouseWon(winner, house, highestPlayerScore);
 
             players.remove(house);
             isPlaying = checkIfWantsToPlayAgain();
         }
+    }
+
+
+    //Methods
+
+    private List<Player> getWinners(int highestPlayerScore) {
+        List<Player> winner = new ArrayList<>();
+        //Iterate through players, if they have a score equal to the highestCurrentScore, add them to winner list
+        for (Player player : players) {
+            if (player.getScore() == highestPlayerScore) {
+                winner.add(player);
+            }
+        }
+        return winner;
+    }
+
+    private void calculateIfHouseWon(List<Player> winner, Player house, int highestPlayerScore) {
+        if ((winner.isEmpty() || (house.getHand().calculateHand() > highestPlayerScore && (house.getHand().calculateHand() <= 21)))) {
+            displayWinner(house);
+        } else if (house.getScore() == highestPlayerScore) {
+            displayDraw(winner);
+        } else {
+            players.add(house);
+            displayWinner(winner);
+        }
+    }
+
+    private int playersPlayOutTurn(Player house, int highestPlayerScore, List<Card> deck) {
+        for (Player player : players) {
+
+            Hand hand = player.getHand();
+            boolean playing = true;
+            while (playing) {
+                Utilities.createBigBlankSpace();
+                System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
+                house.getHand().displayHouseCards();
+
+                Utilities.createLineofChars(25, '=');
+                System.out.println(Utilities.centerMessage(String.format("|\t%s\t|", player.getName()), 25, ' '));
+
+                hand.displayCards();
+
+                if (hand.checkIfBlackJack()) {
+                    highestPlayerScore = player.getScore();
+                    System.out.println("You've got Blackjack!");
+                    System.out.print("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
+                }
+
+                playing = processHitOrStay(hand, deck);
+
+                if (hand.checkIfBusted()) {
+                    hand.displayCards();
+                    player.setBusted(true);
+                    System.out.println("Busted!");
+                    System.out.print("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
+
+                }
+
+            }
+
+            if (hand.calculateHand() > highestPlayerScore && hand.calculateHand() <= 21) {
+                highestPlayerScore = hand.calculateHand();
+            }
+        }
+        return highestPlayerScore;
     }
 
     private boolean checkIfWantsToPlayAgain() {
@@ -139,13 +146,12 @@ public class GameScreen extends Screen {
         while (true) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
             houseHand.displayCards();
-            if (houseHand.checkIfBlackJack())   {
+            if (houseHand.checkIfBlackJack()) {
                 System.out.println("The House got Blackjack!");
                 System.out.print("Press Enter to continue...");
                 scanner.nextLine();
                 break;
             } else {
-                houseHand.changeAcePoints();
                 if (houseHand.calculateHand() < 17) {
                     houseHand.addRandomCardToHand(deck);
                     System.out.print("Press Enter to play dealer next card...");
@@ -156,7 +162,6 @@ public class GameScreen extends Screen {
             }
             //check if hand has aces, if so change aces value from 11 to 1
             if (houseHand.checkIfBusted()) {
-                houseHand.changeAcePoints();
                 if (houseHand.checkIfBusted()) {
                     house.setBusted(true);
                     houseHand.displayCards();
@@ -185,7 +190,6 @@ public class GameScreen extends Screen {
         }
         return true;
     }
-
 
 
     //if house is the winner

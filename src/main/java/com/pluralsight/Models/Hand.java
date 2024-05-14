@@ -33,6 +33,7 @@ public class Hand {
     }
 
     public boolean checkIfBusted() {
+        changeAcePoints();
         return this.calculateHand() > 21;
     }
 

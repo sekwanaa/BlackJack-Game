@@ -18,22 +18,26 @@ public class Hand {
 
     public int calculateHand() {
         int handTotal = 0;
-        for (Card card : hand) {
-            handTotal += card.getPoints();
+        int aceCount = 0;
+
+        for (Card card : this.hand) {
+            int points = card.getPoints();
+            if (card.getName().equals("A")) {
+                aceCount++;
+                points = 11;  // Count ace as 11 initially
+            }
+            handTotal += points;
+        }
+
+        // Adjust for aces if hand total exceeds 21
+        while (handTotal > 21 && aceCount > 0) {
+            handTotal -= 10;  // Count one ace as 1 instead of 11
+            aceCount--;
         }
         return handTotal;
     }
 
-    public void changeAcePoints() {
-        for (Card card : hand) {
-            if (card.getName().equals("A")) {
-                card.setPoints(1);
-            }
-        }
-    }
-
     public boolean checkIfBusted() {
-        changeAcePoints();
         return this.calculateHand() > 21;
     }
 
@@ -56,7 +60,6 @@ public class Hand {
         for (Card card : hand) {
             card.constructCard();
         }
-        if (calculateHand() > 21) changeAcePoints();
         System.out.println("Total: " + calculateHand());
     }
 
@@ -65,10 +68,6 @@ public class Hand {
     }
 
     //Getters
-
-    public List<Card> getHand() {
-        return this.hand;
-    }
 
     @Override
     public String toString() {

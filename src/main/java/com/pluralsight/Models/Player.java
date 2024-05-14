@@ -4,9 +4,10 @@ import java.util.List;
 
 public class Player {
     private final String name;
-    private Hand hand = new Hand();
+    private final Hand hand = new Hand();
     private boolean busted = false;
-    private int points;
+    private double points;
+    private double originalBetAmount;
 
     public Player(String name) {
         this.name = name;
@@ -19,12 +20,28 @@ public class Player {
         hand.addRandomCardToHand(deck);
     }
 
-    public int getScore() {
-        return hand.calculateHand();
+    public void bet(double betAmount) {
+        this.points -= betAmount;
+        this.originalBetAmount = betAmount;
+    }
+
+    public void processBlackJack() {
+        this.points += originalBetAmount + (originalBetAmount * 1.5);
+    }
+
+    public void processWin() {
+        this.points += originalBetAmount * 2;
+    }
+
+    public void processDraw() {
+        this.points += originalBetAmount;
     }
 
 
     //Getters and Setters
+    public int getScore() {
+        return hand.calculateHand();
+    }
 
     public String getName() {
         return name;
@@ -32,10 +49,6 @@ public class Player {
 
     public Hand getHand() {
         return hand;
-    }
-
-    public void setHand(Hand hand) {
-        this.hand = hand;
     }
 
     public boolean isBusted() {
@@ -46,8 +59,8 @@ public class Player {
         this.busted = busted;
     }
 
-    public int getPoints() {
-        return points;
+    public double getPoints() {
+        return this.points;
     }
 
     public void setPoints(int points) {

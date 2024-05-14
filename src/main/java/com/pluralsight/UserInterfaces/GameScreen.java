@@ -34,15 +34,18 @@ public class GameScreen extends Screen {
                 player.createHand(deck);
             }
 
+            //Get bets for each player
+            getBets();
+
             //For each player, have them play out their turn against the house.
             playersPlayOutTurn(house, deck);
 
             //House does their turn
             housePlaysOutTurn(house, deck);
 
-            //calculate cards given to each player. Closest to 21 wins.
-//            List<Player> winner = getWinners(highestPlayerScore);
-
+            /*players vs house, if anyone has higher than the house they win.
+            anyone who draws with the house gets their money back
+            if everyone busts and house also busts, no one wins, but you dont get your money back.*/
             Map<Player, String> winnersOrDraws = calculateIfHouseWon(house);
 
             if (winnersOrDraws == null) {
@@ -60,37 +63,38 @@ public class GameScreen extends Screen {
 
     //Methods
 
-    private List<Player> getWinners(int highestPlayerScore) {
-        List<Player> winner = new ArrayList<>();
-        //Iterate through players, if they have a score equal to the highestCurrentScore, add them to winner list
+    private void getBets() {
         for (Player player : players) {
-            if (player.getScore() == highestPlayerScore) {
-                winner.add(player);
+            double availablePoints = player.getPoints();
+
+            Utilities.createBigBlankSpace();
+            System.out.println(Utilities.centerMessage(String.format("%s", player.getName()), 46, ' '));
+            Utilities.createLineofChars(46, '=');
+
+            while (true) {
+                System.out.printf("""
+                        How many would you like to bet?
+                        Current points: %.2f
+                        
+                        Enter amount here:\s""", availablePoints);
+                double betAmount = scanner.nextDouble();
+                scanner.nextLine();
+
+                if (betAmount > availablePoints || betAmount < 0) {
+                    System.err.println("Please bet within how many points you have...");
+                    System.out.println();
+                } else {
+                    player.bet(betAmount);
+                    break;
+                }
             }
         }
-        return winner;
-    }
-
-    private Map<Player, String> calculateIfHouseWon(Player house) {
-        Map<Player, String> winnersOrDraws = new HashMap<>();
-        for (Player player : players) {
-            if ((house.isBusted() && !player.isBusted()) || (!player.isBusted() && player.getScore() > house.getScore())) {
-                winnersOrDraws.put(player, "winner");
-            } else if (!player.isBusted() && player.getScore() == house.getScore()) {
-                winnersOrDraws.put(player, "draw");
-            }
-        }
-
-        if (winnersOrDraws.isEmpty()) {
-            return null;
-        }
-        return winnersOrDraws;
     }
 
     private void playersPlayOutTurn(Player house, List<Card> deck) {
         for (Player player : players) {
-
             Hand hand = player.getHand();
+
             boolean playing = true;
             while (playing) {
                 Utilities.createBigBlankSpace();
@@ -98,12 +102,13 @@ public class GameScreen extends Screen {
                 house.getHand().displayHouseCards();
 
                 Utilities.createLineofChars(25, '=');
-                System.out.println(Utilities.centerMessage(String.format("| %s : %dpts |", player.getName(), player.getPoints()), 25, ' '));
+                System.out.println(Utilities.centerMessage(String.format("| %s : %.2fpts |", player.getName(), player.getPoints()), 25, ' '));
 
                 hand.displayCards();
 
                 if (hand.checkIfBlackJack()) {
                     System.out.println("You've got Blackjack!");
+                    player.processBlackJack();
                     System.out.print("Press Enter to continue...");
                     scanner.nextLine();
                     break;
@@ -114,61 +119,6 @@ public class GameScreen extends Screen {
                 if (hand.checkIfBusted()) {
                     hand.displayCards();
                     player.setBusted(true);
-                    System.out.println("Busted!");
-                    System.out.print("Press Enter to continue...");
-                    scanner.nextLine();
-                    break;
-
-                }
-
-            }
-        }
-    }
-
-    private boolean checkIfWantsToPlayAgain() {
-        while (true) {
-            System.out.print("Would you all like to play again? (Y/N): ");
-            String playAgain = scanner.nextLine().toLowerCase();
-            switch (playAgain) {
-                case "y":
-                    for (Player player : players) {
-                        player.getHand().clearHand();
-                    }
-                    return true;
-                case "n":
-                    return false;
-                default:
-                    System.out.println("That is not a valid choice, try again.");
-                    break;
-            }
-        }
-    }
-
-    private void housePlaysOutTurn(Player house, List<Card> deck) {
-        Hand houseHand = house.getHand();
-        while (true) {
-            System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
-            houseHand.displayCards();
-            if (houseHand.checkIfBlackJack()) {
-                System.out.println("The House got Blackjack!");
-                System.out.print("Press Enter to continue...");
-                scanner.nextLine();
-                break;
-            } else {
-                if (houseHand.calculateHand() < 17) {
-                    houseHand.addRandomCardToHand(deck);
-                    System.out.print("Press Enter to play dealer next card...");
-                    scanner.nextLine();
-                } else {
-                    break;
-                }
-            }
-            //check if hand has aces, if so change aces value from 11 to 1
-            if (houseHand.checkIfBusted()) {
-                if (houseHand.checkIfBusted()) {
-                    house.setBusted(true);
-                    houseHand.displayCards();
-                    System.out.println("Total: " + houseHand.calculateHand());
                     System.out.println("Busted!");
                     System.out.print("Press Enter to continue...");
                     scanner.nextLine();
@@ -194,6 +144,54 @@ public class GameScreen extends Screen {
         return true;
     }
 
+    private void housePlaysOutTurn(Player house, List<Card> deck) {
+        Hand houseHand = house.getHand();
+        while (true) {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
+            houseHand.displayCards();
+            if (houseHand.checkIfBlackJack()) {
+                System.out.println("The House got Blackjack!");
+                System.out.print("Press Enter to continue...");
+                scanner.nextLine();
+                break;
+            } else {
+                if (houseHand.calculateHand() < 17) {
+                    houseHand.addRandomCardToHand(deck);
+                    System.out.print("Press Enter to play dealer next card...");
+                    scanner.nextLine();
+                } else {
+                    break;
+                }
+            }
+        }
+        //check if hand has aces, if so change aces value from 11 to 1
+        if (houseHand.checkIfBusted()) {
+            houseHand.displayCards();
+            house.setBusted(true);
+            System.out.println("Busted!");
+            System.out.print("Press Enter to continue...");
+            scanner.nextLine();
+        }
+    }
+
+    private Map<Player, String> calculateIfHouseWon(Player house) {
+        Map<Player, String> winnersOrDraws = new HashMap<>();
+        for (Player player : players) {
+            if ((house.isBusted() && !player.isBusted()) || (!player.isBusted() && player.getScore() > house.getScore())) {
+                player.processWin();
+                winnersOrDraws.put(player, "winner");
+            } else if (!player.isBusted() && player.getScore() == house.getScore()) {
+                player.processDraw();
+                winnersOrDraws.put(player, "draw");
+            }
+        }
+
+        if (winnersOrDraws.isEmpty()) {
+            return null;
+        }
+        return winnersOrDraws;
+    }
+
 
     //if house is the winner
     private void displayWinner(Player house) {
@@ -207,12 +205,12 @@ public class GameScreen extends Screen {
 
         Utilities.createLineofChars(40, '=');
 
-        for (Player losingHands : players) {
-            if (losingHands.isBusted()) {
-                System.out.printf("%s: %d ------ Busted!\n", losingHands.getName(), losingHands.getHand().calculateHand());
+        for (Player player : players) {
+            if (player.isBusted()) {
+                System.out.printf("%s: %d ------ Busted!\n", player.getName(), player.getHand().calculateHand());
 
             } else {
-                System.out.printf("%s: %d\n", losingHands.getName(), losingHands.getHand().calculateHand());
+                System.out.printf("%s: %d\n", player.getName(), player.getHand().calculateHand());
             }
         }
     }
@@ -223,14 +221,12 @@ public class GameScreen extends Screen {
         for (Map.Entry<Player, String> playerStringEntry : winnersAndOrDraws.entrySet())
             if (playerStringEntry.getValue().equals("draw")) {
                 System.out.printf("""
-                    There was a draw between the house and %s with %d points
-
-                    """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
+                        There was a draw between the house and %s with %d points
+                        """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
             } else if (playerStringEntry.getValue().equals("winner"))
-            System.out.printf("""
-                    %s won with %d points
-
-                    """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
+                System.out.printf("""
+                        %s won with %d points
+                        """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
 
 
         List<Player> otherPlayers = findNonMatchingItems(players, winnersAndOrDraws);
@@ -254,6 +250,25 @@ public class GameScreen extends Screen {
             }
         }
         return nonMatchingItems;
+    }
+
+    private boolean checkIfWantsToPlayAgain() {
+        while (true) {
+            System.out.print("Would you all like to play again? (Y/N): ");
+            String playAgain = scanner.nextLine().toLowerCase();
+            switch (playAgain) {
+                case "y":
+                    for (Player player : players) {
+                        player.getHand().clearHand();
+                    }
+                    return true;
+                case "n":
+                    return false;
+                default:
+                    System.out.println("That is not a valid choice, try again.");
+                    break;
+            }
+        }
     }
 
     //Getters and Setters

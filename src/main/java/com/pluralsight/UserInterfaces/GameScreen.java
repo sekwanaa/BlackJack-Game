@@ -98,7 +98,7 @@ public class GameScreen extends Screen {
                 house.getHand().displayHouseCards();
 
                 Utilities.createLineofChars(25, '=');
-                System.out.println(Utilities.centerMessage(String.format("|\t%s\t|", player.getName()), 25, ' '));
+                System.out.println(Utilities.centerMessage(String.format("| %s : %dpts |", player.getName(), player.getPoints()), 25, ' '));
 
                 hand.displayCards();
 

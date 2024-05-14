@@ -6,6 +6,7 @@ public class Player {
     private final String name;
     private Hand hand = new Hand();
     private boolean busted = false;
+    private int points;
 
     public Player(String name) {
         this.name = name;
@@ -45,5 +46,11 @@ public class Player {
         this.busted = busted;
     }
 
+    public int getPoints() {
+        return points;
+    }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
 }

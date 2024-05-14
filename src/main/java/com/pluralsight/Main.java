@@ -24,6 +24,7 @@ public class Main {
 
             // Screen to ask each player how many points they would like to wager, for now can wager any points
             PointsScreen pointsScreen = new PointsScreen(players);
+            pointsScreen.display();
 
             //Game screen to actually play out the game of blackjack
             GameScreen gameScreen = new GameScreen(players);

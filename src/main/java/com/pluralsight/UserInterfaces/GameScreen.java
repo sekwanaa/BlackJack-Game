@@ -34,19 +34,23 @@ public class GameScreen extends Screen {
                 player.createHand(deck);
             }
 
-            int highestPlayerScore = 0;
-
             //For each player, have them play out their turn against the house.
-
-            highestPlayerScore = playersPlayOutTurn(house, highestPlayerScore, deck);
+            playersPlayOutTurn(house, deck);
 
             //House does their turn
             housePlaysOutTurn(house, deck);
 
             //calculate cards given to each player. Closest to 21 wins.
-            List<Player> winner = getWinners(highestPlayerScore);
+//            List<Player> winner = getWinners(highestPlayerScore);
 
-            calculateIfHouseWon(winner, house, highestPlayerScore);
+            Map<Player, String> winnersOrDraws = calculateIfHouseWon(house);
+
+            if (winnersOrDraws == null) {
+                displayWinner(house);
+            } else {
+                players.add(house);
+                displayWinnersAndOrDraws(winnersOrDraws);
+            }
 
             players.remove(house);
             isPlaying = checkIfWantsToPlayAgain();
@@ -67,18 +71,23 @@ public class GameScreen extends Screen {
         return winner;
     }
 
-    private void calculateIfHouseWon(List<Player> winner, Player house, int highestPlayerScore) {
-        if ((winner.isEmpty() || (house.getHand().calculateHand() > highestPlayerScore && (house.getHand().calculateHand() <= 21)))) {
-            displayWinner(house);
-        } else if (house.getScore() == highestPlayerScore) {
-            displayDraw(winner);
-        } else {
-            players.add(house);
-            displayWinner(winner);
+    private Map<Player, String> calculateIfHouseWon(Player house) {
+        Map<Player, String> winnersOrDraws = new HashMap<>();
+        for (Player player : players) {
+            if ((house.isBusted() && !player.isBusted()) || (!player.isBusted() && player.getScore() > house.getScore())) {
+                winnersOrDraws.put(player, "winner");
+            } else if (!player.isBusted() && player.getScore() == house.getScore()) {
+                winnersOrDraws.put(player, "draw");
+            }
         }
+
+        if (winnersOrDraws.isEmpty()) {
+            return null;
+        }
+        return winnersOrDraws;
     }
 
-    private int playersPlayOutTurn(Player house, int highestPlayerScore, List<Card> deck) {
+    private void playersPlayOutTurn(Player house, List<Card> deck) {
         for (Player player : players) {
 
             Hand hand = player.getHand();
@@ -94,7 +103,6 @@ public class GameScreen extends Screen {
                 hand.displayCards();
 
                 if (hand.checkIfBlackJack()) {
-                    highestPlayerScore = player.getScore();
                     System.out.println("You've got Blackjack!");
                     System.out.print("Press Enter to continue...");
                     scanner.nextLine();
@@ -114,12 +122,7 @@ public class GameScreen extends Screen {
                 }
 
             }
-
-            if (hand.calculateHand() > highestPlayerScore && hand.calculateHand() <= 21) {
-                highestPlayerScore = hand.calculateHand();
-            }
         }
-        return highestPlayerScore;
     }
 
     private boolean checkIfWantsToPlayAgain() {
@@ -215,44 +218,22 @@ public class GameScreen extends Screen {
     }
 
     //if house is not the winner
-    private void displayWinner(List<Player> winner) {
+    private void displayWinnersAndOrDraws(Map<Player, String> winnersAndOrDraws) {
         Utilities.createBigBlankSpace();
-        if (winner.size() == 1) {
-            System.out.printf("""
-                    The winner is: %s with %d points
-
-                    """, winner.get(0).getName(), winner.get(0).getHand().calculateHand());
-        } else if (winner.size() > 1) {
-            System.out.println("The winners are: \n");
-            winner.forEach(w -> System.out.printf("\t%s: %d points\n", w.getName(), w.getHand().calculateHand()));
-        }
-
-        List<Player> otherPlayers = findNonMatchingItems(players, winner);
-        Utilities.createLineofChars(40, '=');
-
-        for (Player player : otherPlayers) {
-            if (player.isBusted()) {
-                System.out.printf("%s: %d ------ Busted!\n", player.getName(), player.getHand().calculateHand());
-            } else {
-                System.out.printf("%s: %d\n", player.getName(), player.getHand().calculateHand());
-            }
-        }
-    }
-
-    //if the house and a player tie
-    private void displayDraw(List<Player> winner) {
-        Utilities.createBigBlankSpace();
-        if (winner.size() == 1) {
-            System.out.printf("""
+        for (Map.Entry<Player, String> playerStringEntry : winnersAndOrDraws.entrySet())
+            if (playerStringEntry.getValue().equals("draw")) {
+                System.out.printf("""
                     There was a draw between the house and %s with %d points
 
-                    """, winner.get(0).getName(), winner.get(0).getHand().calculateHand());
-        } else if (winner.size() > 1) {
-            System.out.println("There was a draw between the house and: \n");
-            winner.forEach(w -> System.out.printf("\t%s with %d points\n", w.getName(), w.getHand().calculateHand()));
-        }
+                    """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
+            } else if (playerStringEntry.getValue().equals("winner"))
+            System.out.printf("""
+                    %s won with %d points
 
-        List<Player> otherPlayers = findNonMatchingItems(players, winner);
+                    """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
+
+
+        List<Player> otherPlayers = findNonMatchingItems(players, winnersAndOrDraws);
         Utilities.createLineofChars(40, '=');
 
         for (Player player : otherPlayers) {
@@ -264,12 +245,11 @@ public class GameScreen extends Screen {
         }
     }
 
-    public <T> List<T> findNonMatchingItems(List<T> list1, List<T> list2) {
-        List<T> nonMatchingItems = new ArrayList<>();
-        Set<T> set = new HashSet<>(list2);
+    public List<Player> findNonMatchingItems(List<Player> list1, Map<Player, String> winnersOrDraws) {
+        List<Player> nonMatchingItems = new ArrayList<>();
 
-        for (T item : list1) {
-            if (!set.contains(item)) {
+        for (Player item : list1) {
+            if (!winnersOrDraws.containsKey(item)) {
                 nonMatchingItems.add(item);
             }
         }

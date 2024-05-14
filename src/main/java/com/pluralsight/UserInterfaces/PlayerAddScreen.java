@@ -13,7 +13,8 @@ public class PlayerAddScreen extends Screen{
 
     //Methods
     public void display() {
-        System.out.println(Utilities.centerMessage("Enter up to 4 players", 46, '-'));
+        System.out.println(Utilities.centerMessage("Enter up to 4 players", 46, ' '));
+        Utilities.createLineofChars(46, '~');
         addPlayers();
         boolean isAddingPlayers = true;
         while (isAddingPlayers) {

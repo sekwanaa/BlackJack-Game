@@ -56,6 +56,7 @@ public class Hand {
         for (Card card : hand) {
             card.constructCard();
         }
+        if (calculateHand() > 21) changeAcePoints();
         System.out.println("Total: " + calculateHand());
     }
 

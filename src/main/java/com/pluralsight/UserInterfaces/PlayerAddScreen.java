@@ -1,18 +1,20 @@
 package com.pluralsight.UserInterfaces;
 
+import com.pluralsight.Models.Player;
 import com.pluralsight.Utilities.Utilities;
 
 import java.util.List;
 
 public class PlayerAddScreen extends Screen{
 
-    public PlayerAddScreen (List<String> players) {
+    public PlayerAddScreen (List<Player> players) {
         super(players);
     }
 
     //Methods
     public void display() {
-        System.out.println(Utilities.centerMessage("Enter up to 4 players", 46, '-'));
+        System.out.println(Utilities.centerMessage("Enter up to 4 players", 46, ' '));
+        Utilities.createLineofChars(46, '~');
         addPlayers();
         boolean isAddingPlayers = true;
         while (isAddingPlayers) {
@@ -38,6 +40,6 @@ public class PlayerAddScreen extends Screen{
     private void addPlayers() {
         System.out.print("Enter player name: ");
         String playerName = scanner.nextLine();
-        this.players.add(playerName);
+        this.players.add(new Player(playerName));
     }
 }

@@ -8,9 +8,9 @@ Welcome to the CLI Blackjack Game, a command-line interface implementation of th
 
 ### Table of Contents
 * [Features](https://github.com/sekwanaa/BlackJack-Game/blob/main/README.md#features)
-* [Installation](https://github.com/sekwanaa/BlackJack-Game/edit/main/README.md#installation)
-* [Usage](https://github.com/sekwanaa/BlackJack-Game/edit/main/README.md#usage)
-* [Rules](https://github.com/sekwanaa/BlackJack-Game/edit/main/README.md#rules)
+* [Installation](https://github.com/sekwanaa/BlackJack-Game/blob/main/README.md#installation)
+* [Usage](https://github.com/sekwanaa/BlackJack-Game/blob/main/README.md#usage)
+* [Rules](https://github.com/sekwanaa/BlackJack-Game/blob/main/README.md#rules)
 
 ### Features
 * Play classic Blackjack against the computer.

@@ -71,6 +71,26 @@ Here are some key rules:
 
 For a complete set of rules, please refer to the [BlackJack Rules](https://bicyclecards.com/how-to-play/blackjack/).
 
+### Contributing
+We welcome contributions to this project!\
+To contribute:
+
+1. Fork the repository.
+2. Create a new branch:
+``` bash
+git checkout -b feature-name
+```
+3. Make your changes and commit them:
+``` bash
+git commit -m "Description of your feature"
+```
+4. Push to the branch:
+``` bash
+git push origin feature-name
+```
+5. Open a pull request detailing your changes.
+
+Please ensure your code follows our [Code of Conduct]() and adheres to the [contribution guidelines]().
 <details>
   
   **<summary>Screenshots</summary>**

@@ -23,11 +23,11 @@ Welcome to the CLI Blackjack Game, a command-line interface implementation of th
 ### Steps
 1. Clone the repository:
 ``` bash
-git clone https://github.com/yourusername/cli-blackjack.git
+git clone https://github.com/yourusername/BlackJack-Game.git
 ```
 2. Navigate to the project directory:
 ``` bash
-cd cli-blackjack
+cd BlackJack-Game
 ```
 3. Compile the Java files:
 ``` bash
@@ -43,9 +43,16 @@ java -cp bin com.yourusername.blackjack.Blackjack
 ### Commands
 * **'hit'** - Draw another card.\
 * **'stand'** - End your turn.\
-* **'double'** - Double your bet, draw one more card, and end your turn.\
-* **'split'** - Split your hand into two hands (if you have a pair).\
-* **'insurance'** - Take insurance if the dealer shows an Ace.
+
+  <details>
+  
+  **<summary>To do</summary>**
+  
+  * **'double'** - Double your bet, draw one more card, and end your turn.\
+  * **'split'** - Split your hand into two hands (if you have a pair).\
+  * **'insurance'** - Take insurance if the dealer shows an Ace.
+      
+  </details>
 
 ### Rules
 The objective of Blackjack is to beat the dealer by having a hand value closer to 21 without exceeding it.\

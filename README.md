@@ -1,16 +1,71 @@
 <div align="center">
   
-  # Mock BlackJack
+  # CLI BlackJack Game
   
 </div>
 
-This application aims to simulate BlackJack. Users are able to play by themselves or with multiple other players.\
-#### The aim of the game:
-The object of the game is to get closer to 21 than the dealer without going over 21. \
-If a hand goes over 21, it is called a “bust” or “break” and the wager is lost. In 21, \
-Jacks, Queens, Kings and 10s count as 10.
+Welcome to the CLI Blackjack Game, a command-line interface implementation of the classic casino game Blackjack. This project allows you to play Blackjack against the computer in your terminal.
 
-The application takes from a deck that is shuffled, so it is limited to a maximum of 4 players.
+### Table of Contents
+* [Features](https://github.com/sekwanaa/BlackJack-Game/edit/main/README.md#features)
+* [Installation](https://github.com/sekwanaa/BlackJack-Game/edit/main/README.md#installation)
+* [Usage](https://github.com/sekwanaa/BlackJack-Game/edit/main/README.md#usage)
+* [Rules](https://github.com/sekwanaa/BlackJack-Game/edit/main/README.md#rules)
+
+### Features
+* Play classic Blackjack against the computer.
+* Simple and intuitive command-line interface.
+
+### Installation
+#### Prerequisites
+* Java Development Kit (JDK) 17 or higher
+
+### Steps
+1. Clone the repository:
+``` bash
+git clone https://github.com/yourusername/cli-blackjack.git
+```
+2. Navigate to the project directory:
+``` bash
+cd cli-blackjack
+```
+3. Compile the Java files:
+``` bash
+javac -d bin src/com/yourusername/blackjack/*.java
+```
+
+### Usage
+Run the game using the following command:
+``` bash
+java -cp bin com.yourusername.blackjack.Blackjack
+```
+
+### Commands
+* **'hit'** - Draw another card.\
+* **'stand'** - End your turn.\
+* **'double'** - Double your bet, draw one more card, and end your turn.\
+* **'split'** - Split your hand into two hands (if you have a pair).\
+* **'insurance'** - Take insurance if the dealer shows an Ace.
+
+### Rules
+The objective of Blackjack is to beat the dealer by having a hand value closer to 21 without exceeding it.\
+Here are some key rules:
+
+* **Card Values**: Number cards are worth their face value, face cards (King, Queen, Jack) are worth 10, and Aces can be worth 1 or 11.
+* **Gameplay**:
+  * Each player is dealt two cards, face up. The dealer is dealt two cards, with one face up and one face down.
+  * Players must decide to hit, stand, double, or split.
+  * The dealer reveals the hidden card and must hit until their cards total 17 or higher.
+* **Winning**:
+  * If your hand is closer to 21 than the dealer’s hand, you win.
+  * If your hand exceeds 21, you bust and lose the bet.
+  * If the dealer busts, you win.
+  * If you and the dealer have the same total, it's a push (tie).
+
+For a complete set of rules, please refer to the [BlackJack Rules](https://bicyclecards.com/how-to-play/blackjack/).
+
+<details>
+  <summary>Screenshots</summary>
 
 ### Home Screen
 ![image](https://github.com/sekwanaa/BlackJack-Game/assets/112197395/e93e629c-d81b-4539-8f9a-691ab13f9c74)
@@ -28,3 +83,6 @@ The application takes from a deck that is shuffled, so it is limited to a maximu
 
 ### Winning
 ![image](https://github.com/sekwanaa/BlackJack-Game/assets/112197395/4f1c5c91-15a8-4b0b-a709-42b40ef58c23)
+
+  
+</details>

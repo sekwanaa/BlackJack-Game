@@ -42,7 +42,7 @@ java -cp bin com.yourusername.blackjack.Blackjack
 
 ### Commands
 * **'hit'** - Draw another card.\
-* **'stand'** - End your turn.\
+* **'stay'** - End your turn.\
 
   <details>
   

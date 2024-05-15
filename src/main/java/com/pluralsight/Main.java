@@ -4,6 +4,7 @@ import com.pluralsight.Models.Player;
 import com.pluralsight.UserInterfaces.GameScreen;
 import com.pluralsight.UserInterfaces.PlayerAddScreen;
 import com.pluralsight.UserInterfaces.PointsScreen;
+import com.pluralsight.UserInterfaces.Screen;
 
 import java.util.*;
 
@@ -18,13 +19,12 @@ public class Main {
             System.out.println("|==============You are playing:==============|");
             System.out.println("+------------------BlackJack-----------------+\n");
 
-            // Screen to ask who is playing. each player is added to the list
-            PlayerAddScreen playerAddScreen = new PlayerAddScreen(players);
-            playerAddScreen.display();
+//TODO      Use Single-Responsibility Principles to organize code better.
+            Screen screen = new Screen();
 
-                // Screen to ask each player how many points they would like to wager, for now can wager any points
-                PointsScreen pointsScreen = new PointsScreen(players);
-                pointsScreen.display();
+            screen.displayPlayerAddScreen();
+
+            screen.displayPointsScreen();
 
             boolean isPlaying = true;
             while (isPlaying) {

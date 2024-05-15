@@ -11,6 +11,7 @@ Welcome to the CLI Blackjack Game, a command-line interface implementation of th
 * [Installation](https://github.com/sekwanaa/BlackJack-Game?tab=readme-ov-file#installation)
 * [Usage](https://github.com/sekwanaa/BlackJack-Game?tab=readme-ov-file#usage)
 * [Rules](https://github.com/sekwanaa/BlackJack-Game?tab=readme-ov-file#rules)
+* [Contributing](https://github.com/sekwanaa/BlackJack-Game?tab=readme-ov-file#contributing)
 
 ### Features
 * Play classic Blackjack against the computer.

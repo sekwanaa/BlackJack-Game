@@ -8,10 +8,10 @@ First off, thank you for considering contributing to the CLI Blackjack Game! It'
 
 ### How to Contribute
 #### Reporting Bugs
-If you find a bug, please report it by opening an issue on our GitHub Issues page. Please include as much detail as possible, including steps to reproduce the bug, and the environment in which it occurred (e.g., operating system, Java version).
+If you find a bug, please report it by opening an issue on our [GitHub Issues page](https://github.com/sekwanaa/BlackJack-Game/issues). Please include as much detail as possible, including steps to reproduce the bug, and the environment in which it occurred (e.g., operating system, Java version).
 
 ### Suggesting Enhancements
-If you have an idea for an enhancement, we’d love to hear about it! Open an issue on our GitHub Issues page and describe the enhancement you’d like to see, why you think it would be useful, and how it might be implemented.
+If you have an idea for an enhancement, we’d love to hear about it! Open an issue on our [GitHub Issues page](https://github.com/sekwanaa/BlackJack-Game/issues) and describe the enhancement you’d like to see, why you think it would be useful, and how it might be implemented.
 
 ### Submitting Pull Requests
 1. Fork the repository: Click the "Fork" button at the top right of the repository and clone your fork locally.
@@ -51,7 +51,7 @@ git push origin my-feature-branch
 * Increase the version numbers in any examples files and the README.md to the new version that this Pull Request would represent.
 * You may merge the Pull Request in once you have the sign-off of at least one other developer, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
 ### Code of Conduct
-This project adheres to a Code of Conduct. By participating, you are expected to uphold this code.
+This project adheres to a [Code of Conduct](https://github.com/sekwanaa/BlackJack-Game/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ### Additional Resources
 [Contributor Covenant](https://www.contributor-covenant.org/) - A code of conduct for open source projects.

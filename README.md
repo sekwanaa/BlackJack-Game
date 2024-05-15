@@ -42,15 +42,15 @@ java -cp bin com.yourusername.blackjack.Blackjack
 ```
 
 ### Commands
-* **'hit'** - Draw another card.\
-* **'stay'** - End your turn.\
+* **'hit'** - Draw another card.
+* **'stay'** - End your turn.
 
   <details>
   
   **<summary>To do</summary>**
   
-  * **'double'** - Double your bet, draw one more card, and end your turn.\
-  * **'split'** - Split your hand into two hands (if you have a pair).\
+  * **'double'** - Double your bet, draw one more card, and end your turn.
+  * **'split'** - Split your hand into two hands (if you have a pair).
   * **'insurance'** - Take insurance if the dealer shows an Ace.
       
   </details>
@@ -91,7 +91,7 @@ git push origin feature-name
 ```
 5. Open a pull request detailing your changes.
 
-Please ensure your code follows our [Code of Conduct]() and adheres to the [contribution guidelines]().
+Please ensure your code follows our [Code of Conduct](https://github.com/sekwanaa/BlackJack-Game/blob/main/CODE_OF_CONDUCT.md) and adheres to the [contribution guidelines](https://github.com/sekwanaa/BlackJack-Game/blob/main/CONTRIBUTING.md).
 <details>
   
   **<summary>Screenshots</summary>**

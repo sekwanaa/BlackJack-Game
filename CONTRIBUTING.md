@@ -54,6 +54,6 @@ git push origin my-feature-branch
 This project adheres to a Code of Conduct. By participating, you are expected to uphold this code.
 
 ### Additional Resources
-[Contributor Covenant] - A code of conduct for open source projects.
-[Pro Git] - A comprehensive guide to Git.
-[GitHub Help] - A resource for help with GitHub.
+[Contributor Covenant](https://www.contributor-covenant.org/) - A code of conduct for open source projects.
+[Pro Git](https://git-scm.com/book/en/v2) - A comprehensive guide to Git.
+[GitHub Help](https://resources.github.com/) - A resource for help with GitHub.

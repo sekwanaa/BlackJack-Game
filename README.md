@@ -65,7 +65,8 @@ Here are some key rules:
 For a complete set of rules, please refer to the [BlackJack Rules](https://bicyclecards.com/how-to-play/blackjack/).
 
 <details>
-  <summary>Screenshots</summary>
+  
+  **<summary>Screenshots</summary>**
 
 ### Home Screen
 ![image](https://github.com/sekwanaa/BlackJack-Game/assets/112197395/e93e629c-d81b-4539-8f9a-691ab13f9c74)

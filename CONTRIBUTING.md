@@ -17,7 +17,7 @@ If you have an idea for an enhancement, we’d love to hear about it! Open an is
 1. Fork the repository: Click the "Fork" button at the top right of the repository and clone your fork locally.
 
 ``` bash
-git clone https://github.com/yourusername/BlackJack-Game.git
+git clone https://github.com/sekwanaa/BlackJack-Game.git
 cd BlackJack-Game
 ```
 2. Create a branch: Create a new branch for your work.

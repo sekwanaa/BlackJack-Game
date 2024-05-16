@@ -1,17 +1,19 @@
 package com.pluralsight.InteractionHandlers;
 
+import com.pluralsight.Models.Card;
 import com.pluralsight.Models.Player;
+import com.pluralsight.UserInterfaces.Screen;
 import com.pluralsight.Utilities.Inputs;
 
 import java.util.List;
 
-public class PlayerInteractionHandler {
+public class PlayerInteractionHandler extends Screen {
     private PlayerInteractionHandler() {
     }
 
     //Methods
 
-    public static void addPlayers(List<Player> players) {
+    public static void addPlayers() {
         System.out.print("Enter player name: ");
         String playerName = Inputs.getString();
         players.add(new Player(playerName));
@@ -23,14 +25,26 @@ public class PlayerInteractionHandler {
 
         switch (addAnotherPlayer) {
             case "y":
-                addPlayers(players);
+                addPlayers();
                 break;
             case "n":
                 break;
             default:
                 System.out.println("That's not a valid choice, please choose again...");
-                addPlayers(players);
+                addPlayers();
         }
+    }
 
+
+    public static Player initializeHouse(List<Card> deck) {
+        Player house = new Player("House");
+        house.createHand(deck);
+        return house;
+    }
+
+    public static void createPlayerHands(List<Card> deck) {
+        for (Player player : players) {
+            player.createHand(deck);
+        }
     }
 }

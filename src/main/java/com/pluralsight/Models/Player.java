@@ -4,13 +4,15 @@ import java.util.List;
 
 public class Player {
     private final String name;
-    private final Hand hand = new Hand();
-    private boolean busted = false;
+    private final Hand hand;
+    private boolean busted;
     private double points;
     private double originalBetAmount;
 
     public Player(String name) {
         this.name = name;
+        this.hand = new Hand();
+        this.busted = false;
     }
 
     //Methods

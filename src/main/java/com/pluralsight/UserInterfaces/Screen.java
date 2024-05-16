@@ -16,6 +16,12 @@ public class Screen {
     protected static List<Player> players = new ArrayList<>();
 
     //Methods
+
+    public void displayWelcomeMessage() {
+        System.out.println("\n\n\n\n\n+--------Welcome to Sekwanaa's Casino--------+");
+        System.out.println("|==============You are playing:==============|");
+        System.out.println("+------------------BlackJack-----------------+\n");
+    }
     public void displayPlayerAddScreen() {
         System.out.println(Utilities.centerMessage("Enter up to 4 players", 46, ' '));
         Utilities.createLineofChars(46, '~');

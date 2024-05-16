@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Screen {
-    private List<Player> players;
+    private final List<Player> players;
 
     public Screen() {
         this.players = new ArrayList<>();
@@ -34,56 +34,55 @@ public class Screen {
                 Utilities.createLineofChars(46, '=');
                 System.out.print("How much would you like to 'Buy in' with?\n\nEnter 'Buy in' here: ");
                 Integer wageredPoints = Inputs.getInt();
-                if (wageredPoints == null) {
+                if (wageredPoints != null) {
+                    PointsInteractionHandler.processStartingPoints(player, wageredPoints);
                     break;
                 }
-                PointsInteractionHandler.processStartingPoints(player, wageredPoints);
-                break;
             }
         }
     }
 
-    public void displayGameScreen() {
-        //create an array of shuffled cards
-//TODO      Maybe create 5 decks and use 5 decks so that players can't count cards.
-        List<Card> deck = Card.createDeck();
-
-
-        //Creating new player which is the house
-        Player house = new Player("House");
-        house.createHand(deck);
-
-
-        //For each player, create a hand
-        for (Player player : players) {
-            player.createHand(deck);
-        }
-
-        //Get bets for each player
-        getBets();
-
-        //For each player, have them play out their turn against the house.
-        playersPlayOutTurn(house, deck);
-
-        //House does their turn
-        housePlaysOutTurn(house, deck);
-
-            /*players vs house, if anyone has higher than the house they win.
-            anyone who draws with the house gets their money back
-            if everyone busts and house also busts, no one wins, but you dont get your money back.*/
-        Map<Player, String> winnersOrDraws = calculateIfHouseWon(house);
-
-        if (winnersOrDraws == null) {
-            displayWinner(house);
-        } else {
-            players.add(house);
-            displayWinnersAndOrDraws(winnersOrDraws);
-        }
-
-        players.remove(house);
-        List<Player> playersWithNoMoney = filterBrokePlayers();
-        reset(playersWithNoMoney);
-    }
+//    public void displayGameScreen() {
+//        //create an array of shuffled cards
+////TODO      Maybe create 5 decks and use 5 decks so that players can't count cards.
+//        List<Card> deck = Card.createDeck();
+//
+//
+//        //Creating new player which is the house
+//        Player house = new Player("House");
+//        house.createHand(deck);
+//
+//
+//        //For each player, create a hand
+//        for (Player player : players) {
+//            player.createHand(deck);
+//        }
+//
+//        //Get bets for each player
+//        getBets();
+//
+//        //For each player, have them play out their turn against the house.
+//        playersPlayOutTurn(house, deck);
+//
+//        //House does their turn
+//        housePlaysOutTurn(house, deck);
+//
+//            /*players vs house, if anyone has higher than the house they win.
+//            anyone who draws with the house gets their money back
+//            if everyone busts and house also busts, no one wins, but you dont get your money back.*/
+//        Map<Player, String> winnersOrDraws = calculateIfHouseWon(house);
+//
+//        if (winnersOrDraws == null) {
+//            displayWinner(house);
+//        } else {
+//            players.add(house);
+//            displayWinnersAndOrDraws(winnersOrDraws);
+//        }
+//
+//        players.remove(house);
+//        List<Player> playersWithNoMoney = filterBrokePlayers();
+//        reset(playersWithNoMoney);
+//    }
 
 
     //Getters and setters

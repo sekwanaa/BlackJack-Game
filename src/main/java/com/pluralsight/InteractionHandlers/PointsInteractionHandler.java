@@ -5,8 +5,6 @@ import com.pluralsight.UserInterfaces.Screen;
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
 
-import java.util.List;
-
 public class PointsInteractionHandler extends Screen {
     private PointsInteractionHandler() {
     }
@@ -15,7 +13,7 @@ public class PointsInteractionHandler extends Screen {
 
     public static void getBuyIns() {
         for (Player player : players) {
-            Utilities.createBigBlankSpace();
+            Utilities.clearConsole();
             System.out.println(Utilities.centerMessage(player.getName(), 46, ' '));
             Utilities.createLineofChars(46, '=');
             System.out.print("How much would you like to 'Buy in' with?\n\nEnter 'Buy in' here: ");
@@ -35,7 +33,7 @@ public class PointsInteractionHandler extends Screen {
                 continue;
             }
 
-            Utilities.createBigBlankSpace();
+            Utilities.clearConsole();
             System.out.println(Utilities.centerMessage(String.format("%s", player.getName()), 46, ' '));
             Utilities.createLineofChars(46, '=');
 

@@ -24,7 +24,7 @@ public class GameInteractionHandler extends Screen {
             int turn = 1;
             boolean playing = true;
             while (playing) {
-                Utilities.createBigBlankSpace();
+                Utilities.clearConsole();
                 System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
                 house.getHand().displayHouseCards();
 
@@ -135,7 +135,7 @@ public class GameInteractionHandler extends Screen {
 
     public static void displayWinners(Map<Player, String> winnersOrDraws, Player house) {
         if (winnersOrDraws == null) { //if house won
-            Utilities.createBigBlankSpace();
+            Utilities.clearConsole();
             System.out.printf("""
                     The winner is: %s with %d points
 
@@ -153,7 +153,7 @@ public class GameInteractionHandler extends Screen {
             }
         } else { //If house didn't win
             players.add(house);
-            Utilities.createBigBlankSpace();
+            Utilities.clearConsole();
             for (Map.Entry<Player, String> playerStringEntry : winnersOrDraws.entrySet())
                 if (playerStringEntry.getValue().equals("draw")) {
                     System.out.printf("""

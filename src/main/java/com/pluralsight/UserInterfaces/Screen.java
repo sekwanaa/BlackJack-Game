@@ -35,16 +35,17 @@ public class Screen {
         //create an array of shuffled cards
 //TODO      Maybe create 5 decks and use 5 decks so that players can't count cards.
         List<Card> deck = Card.createDeck();
+        List<Card> discardPile = new ArrayList<>();
 
-        Player house = PlayerInteractionHandler.initializeHouse(deck);
+        Player house = PlayerInteractionHandler.initializeHouse(deck, discardPile);
 
-        PlayerInteractionHandler.createPlayerHands(deck);
+        PlayerInteractionHandler.createPlayerHands(deck, discardPile);
 
         PointsInteractionHandler.getBets();
 
-        GameInteractionHandler.playersPlayOutTurn(house, deck);
+        GameInteractionHandler.playersPlayOutTurn(house, deck, discardPile);
 
-        GameInteractionHandler.housePlaysOutTurn(house, deck);
+        GameInteractionHandler.housePlaysOutTurn(house, deck, discardPile);
 
         /*players vs house, if anyone has higher than the house they win.
         anyone who draws with the house gets their money back
@@ -53,7 +54,7 @@ public class Screen {
 
         GameInteractionHandler.displayWinners(winnersOrDraws, house);
 
-        GameInteractionHandler.reset(house);
+        GameInteractionHandler.reset(house, deck, discardPile);
     }
 
 

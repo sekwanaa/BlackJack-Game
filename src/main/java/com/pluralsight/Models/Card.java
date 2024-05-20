@@ -10,21 +10,30 @@ public record Card(String name, int points) {
     public static List<Card> createDeck() {
         List<Card> deck = new ArrayList<>();
 
-        for (int i = 2; i < 11; i++) {
+        for (int i = 0; i < 5; i ++) { //5 decks
+            for (int j = 2; j < 11; j++) { //Cards 2 - 10
+                for (int k = 0; k < 4; k++) { //4 of each card
+                    Card card = new Card(Integer.toString(j), j);
+                    deck.add(card);
+                }
+            }
+
+            //add the 3 face cards plus an Ace
             for (int j = 0; j < 4; j++) {
-                Card card = new Card(Integer.toString(i), i);
-                deck.add(card);
+                deck.add(new Card("J", 10));
+                deck.add(new Card("Q", 10));
+                deck.add(new Card("K", 10));
+                deck.add(new Card("A", 11));
             }
         }
 
-        for (int i = 0; i < 4; i++) {
-            deck.add(new Card("J", 10));
-            deck.add(new Card("Q", 10));
-            deck.add(new Card("K", 10));
-            deck.add(new Card("A", 11));
-        }
 
-        Collections.shuffle(deck);
+        //shuffled 3 times
+        for (int i = 0; i < 3; i++) {
+            Collections.shuffle(deck);
+            Collections.shuffle(deck);
+            Collections.shuffle(deck);
+        }
 
         return deck;
     }

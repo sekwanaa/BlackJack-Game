@@ -4,16 +4,13 @@ import com.pluralsight.Models.*;
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.pluralsight.UserInterfaces.Screen.players;
 
 public class GameInteractionHandler {
 
-    public static void playersPlayOutTurn(Player house, List<Card> deck) {
+    public static void playersPlayOutTurn(Player house, List<Card> deck, List<Card> discardPile) {
         for (Player player : players) {
             if (player.getPoints() <= 0) {
                 System.out.println("\n\nYou've lost all your money, loser.\n\n");
@@ -49,7 +46,7 @@ public class GameInteractionHandler {
                     break;
                 }
 
-                playing = processHitOrStay(hand, deck);
+                playing = processHitOrStay(hand, deck, discardPile);
 
                 if (hand.checkIfBusted()) {
                     hand.displayCards();
@@ -64,12 +61,12 @@ public class GameInteractionHandler {
         }
     }
 
-    private static boolean processHitOrStay(Hand hand, List<Card> deck) {
+    private static boolean processHitOrStay(Hand hand, List<Card> deck, List<Card> discardPile) {
         System.out.println("Would you like to hit or stay?");
         String hitOrStay = Inputs.getString().toLowerCase();
         switch (hitOrStay) {
             case "hit":
-                hand.addRandomCardToHand(deck);
+                hand.addRandomCardToHand(deck, discardPile);
                 break;
             case "stay":
                 return false;
@@ -80,7 +77,7 @@ public class GameInteractionHandler {
         return true;
     }
 
-    public static void housePlaysOutTurn(Player house, List<Card> deck) {
+    public static void housePlaysOutTurn(Player house, List<Card> deck, List<Card> discardPile) {
         Hand houseHand = house.getHand();
         int turn = 1;
         while (true) {
@@ -93,7 +90,7 @@ public class GameInteractionHandler {
                 break;
             } else {
                 if (houseHand.calculateHand() < 17) {
-                    houseHand.addRandomCardToHand(deck);
+                    houseHand.addRandomCardToHand(deck, discardPile);
                     turn++;
                     System.out.print("Press Enter to play dealer next card...");
                     Inputs.awaitInput();
@@ -107,8 +104,6 @@ public class GameInteractionHandler {
             houseHand.displayCards();
             house.setBusted(true);
             System.out.println("Busted!");
-            System.out.print("Press Enter to continue...");
-            Inputs.awaitInput();
         }
     }
 
@@ -135,6 +130,8 @@ public class GameInteractionHandler {
 
     public static void displayWinners(Map<Player, String> winnersOrDraws, Player house) {
         if (winnersOrDraws == null) { //if house won
+            System.out.print("\n\nPress ENTER to view winners...");
+            Inputs.awaitInput();
             Utilities.clearConsole();
             System.out.printf("""
                     The winner is: %s with %d points
@@ -153,6 +150,8 @@ public class GameInteractionHandler {
             }
         } else { //If house didn't win
             players.add(house);
+            System.out.print("\n\nPress ENTER to view winners...");
+            Inputs.awaitInput();
             Utilities.clearConsole();
             for (Map.Entry<Player, String> playerStringEntry : winnersOrDraws.entrySet())
                 if (playerStringEntry.getValue().equals("draw")) {
@@ -164,11 +163,10 @@ public class GameInteractionHandler {
                             %s won with %d points
                             """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
 
+            System.out.println();
+            System.out.println(Utilities.centerMessage(" Points ", 46, '='));
 
-            List<Player> otherPlayers = findNonMatchingItems(winnersOrDraws);
-            Utilities.createLineofChars(40, '=');
-
-            for (Player player : otherPlayers) {
+            for (Player player : players) {
                 if (player.isBusted()) {
                     System.out.printf("%s: %d ------ Busted!\n", player.getName(), player.getHand().calculateHand());
                 } else {
@@ -176,17 +174,6 @@ public class GameInteractionHandler {
                 }
             }
         }
-    }
-
-    private static List<Player> findNonMatchingItems(Map<Player, String> winnersOrDraws) {
-        List<Player> nonMatchingItems = new ArrayList<>();
-
-        for (Player player : players) {
-            if (!winnersOrDraws.containsKey(player)) {
-                nonMatchingItems.add(player);
-            }
-        }
-        return nonMatchingItems;
     }
 
 
@@ -200,7 +187,7 @@ public class GameInteractionHandler {
         return brokePlayers;
     }
 
-    public static void reset(Player house) {
+    public static void reset(Player house, List<Card> deck, List<Card> discardPile) {
         players.remove(house);
         List<Player> brokePlayers = filterBrokePlayers();
         for (Player brokePlayer : brokePlayers) {
@@ -215,6 +202,12 @@ public class GameInteractionHandler {
         for (Player player : players) {
             player.getHand().clearHand();
             player.setBusted(false);
+        }
+
+        deck.addAll(discardPile);
+
+        for (int i = 0; i < 3; i++) { //Shuffle deck 3 times
+            Collections.shuffle(deck);
         }
     }
 

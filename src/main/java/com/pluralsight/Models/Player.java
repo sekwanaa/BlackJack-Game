@@ -16,10 +16,10 @@ public class Player {
     }
 
     //Methods
-    public void createHand(List<Card> deck) {
+    public void createHand(List<Card> deck, List<Card> discardPile) {
         //Creating the house hand
-        hand.addRandomCardToHand(deck);
-        hand.addRandomCardToHand(deck);
+        hand.addRandomCardToHand(deck, discardPile);
+        hand.addRandomCardToHand(deck, discardPile);
     }
 
     public void bet(double betAmount) {

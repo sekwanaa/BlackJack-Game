@@ -36,16 +36,15 @@ public class PlayerInteractionHandler{
         }
     }
 
-
-    public static Player initializeHouse(List<Card> deck) {
+    public static Player initializeHouse(List<Card> deck, List<Card> discardPile) {
         Player house = new Player("House");
-        house.createHand(deck);
+        house.createHand(deck, discardPile);
         return house;
     }
 
-    public static void createPlayerHands(List<Card> deck) {
+    public static void createPlayerHands(List<Card> deck, List<Card> discardPile) {
         for (Player player : players) {
-            player.createHand(deck);
+            player.createHand(deck, discardPile);
         }
     }
 }

@@ -46,9 +46,10 @@ public class Hand {
         return this.calculateHand() == 21;
     }
 
-    public void addRandomCardToHand(List<Card> deck) {
+    public void addRandomCardToHand(List<Card> deck, List<Card> discardPile) {
         int randomIndex = (int) (Math.random() * deck.size() - 1) + 1;
         addCard(deck.get(randomIndex));
+        discardPile.add(deck.get(randomIndex));
         deck.remove(randomIndex);
     }
 

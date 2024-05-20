@@ -21,8 +21,8 @@ public class Hand {
         int aceCount = 0;
 
         for (Card card : this.hand) {
-            int points = card.getPoints();
-            if (card.getName().equals("A")) {
+            int points = card.points();
+            if (card.name().equals("A")) {
                 aceCount++;
                 points = 11;  // Count ace as 11 initially
             }

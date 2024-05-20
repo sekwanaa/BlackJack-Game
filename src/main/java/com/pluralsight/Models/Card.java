@@ -4,27 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Card {
-    private final String name;
-    private int points;
-
-    public Card(String name, int points) {
-        this.name = name;
-        this.points = points;
-    }
+public record Card(String name, int points) {
 
     //Methods
     public static List<Card> createDeck() {
         List<Card> deck = new ArrayList<>();
 
-        for (int i=2; i<11; i++) {
-            for (int j=0; j<4; j++) {
+        for (int i = 2; i < 11; i++) {
+            for (int j = 0; j < 4; j++) {
                 Card card = new Card(Integer.toString(i), i);
                 deck.add(card);
             }
         }
 
-        for (int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             deck.add(new Card("J", 10));
             deck.add(new Card("Q", 10));
             deck.add(new Card("K", 10));
@@ -39,13 +32,15 @@ public class Card {
     public void constructCard() {
         // Constructing the top line of the card
         String top = "┌─────────┐\n";
+        top += String.format("│ %-8s│\n", name());
 
         // Constructing the middle lines of the card
-        String middle = String.format("│ %-8s│\n", getName());
+        String middle = "│         │\n";
         middle += "│         │\n";
 
         // Constructing the bottom lines of the card
-        String bottom = String.format("│       %-2s│\n", getName());
+        String bottom = "│         │\n";
+        bottom += String.format("│       %-2s│\n", name());
         bottom += "└─────────┘";
 
         System.out.println(top + middle + bottom);
@@ -54,6 +49,7 @@ public class Card {
     public static void constructBlankCard() {
         // Constructing the top line of the card
         String top = "┌─────────┐\n";
+        top += "│         │\n";
 
         // Constructing the middle lines of the card
         String middle = "│         │\n";
@@ -61,23 +57,10 @@ public class Card {
 
         // Constructing the bottom lines of the card
         String bottom = "│         │\n";
+        bottom += "│         │\n";
         bottom += "└─────────┘";
 
         System.out.println(top + middle + bottom);
-    }
-
-
-    //Getters and Setters
-    public String getName() {
-        return name;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     @Override

@@ -19,8 +19,10 @@ public class Utilities {
         System.out.println(String.valueOf(fillChar).repeat(Math.max(0, width)));
     }
 
-    public static void createBigBlankSpace() {
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    public static void clearConsole() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
     }
 
 

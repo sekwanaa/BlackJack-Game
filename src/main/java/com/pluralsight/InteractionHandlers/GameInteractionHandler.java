@@ -1,6 +1,5 @@
 package com.pluralsight.InteractionHandlers;
 
-import com.pluralsight.UserInterfaces.Screen;
 import com.pluralsight.Models.*;
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
@@ -10,8 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.pluralsight.UserInterfaces.Screen.players;
 
-public class GameInteractionHandler extends Screen {
+public class GameInteractionHandler {
 
     public static void playersPlayOutTurn(Player house, List<Card> deck) {
         for (Player player : players) {
@@ -24,7 +24,7 @@ public class GameInteractionHandler extends Screen {
             int turn = 1;
             boolean playing = true;
             while (playing) {
-                Utilities.createBigBlankSpace();
+                Utilities.clearConsole();
                 System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
                 house.getHand().displayHouseCards();
 
@@ -135,7 +135,7 @@ public class GameInteractionHandler extends Screen {
 
     public static void displayWinners(Map<Player, String> winnersOrDraws, Player house) {
         if (winnersOrDraws == null) { //if house won
-            Utilities.createBigBlankSpace();
+            Utilities.clearConsole();
             System.out.printf("""
                     The winner is: %s with %d points
 
@@ -153,7 +153,7 @@ public class GameInteractionHandler extends Screen {
             }
         } else { //If house didn't win
             players.add(house);
-            Utilities.createBigBlankSpace();
+            Utilities.clearConsole();
             for (Map.Entry<Player, String> playerStringEntry : winnersOrDraws.entrySet())
                 if (playerStringEntry.getValue().equals("draw")) {
                     System.out.printf("""
@@ -206,6 +206,12 @@ public class GameInteractionHandler extends Screen {
         for (Player brokePlayer : brokePlayers) {
             players.remove(brokePlayer);
         }
+
+        if (players.isEmpty()) {
+            System.out.println("\n\nEveryone has lost their money...\n");
+            System.exit(0);
+        }
+
         for (Player player : players) {
             player.getHand().clearHand();
             player.setBusted(false);

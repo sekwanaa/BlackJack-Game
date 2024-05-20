@@ -53,9 +53,10 @@ public class Hand {
         deck.remove(randomIndex);
     }
 
-    public void displayHouseCards() {
+    public boolean displayHouseCards() {
         hand.get(0).constructCard();
         Card.constructBlankCard();
+        return hand.get(0).name().equals("A");
     }
 
     public void displayCards() {

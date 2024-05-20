@@ -23,7 +23,7 @@ public class GameInteractionHandler {
             while (playing) {
                 Utilities.clearConsole();
                 System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
-                house.getHand().displayHouseCards();
+                boolean showingAnAce = house.getHand().displayHouseCards();
 
                 Utilities.createLineofChars(25, '=');
                 System.out.println(Utilities.centerMessage(String.format("| %s : $%.2f |", player.getName(), player.getPoints()), 25, ' '));
@@ -46,7 +46,7 @@ public class GameInteractionHandler {
                     break;
                 }
 
-                playing = processHitOrStay(hand, deck, discardPile);
+                playing = processPlayerChoice(player, deck, discardPile, showingAnAce, turn);
 
                 if (hand.checkIfBusted()) {
                     hand.displayCards();
@@ -61,18 +61,50 @@ public class GameInteractionHandler {
         }
     }
 
-    private static boolean processHitOrStay(Hand hand, List<Card> deck, List<Card> discardPile) {
-        System.out.println("Would you like to hit or stay?");
-        String hitOrStay = Inputs.getString().toLowerCase();
-        switch (hitOrStay) {
-            case "hit":
-                hand.addRandomCardToHand(deck, discardPile);
-                break;
-            case "stay":
-                return false;
-            default:
-                System.out.println("That's not a valid choice, please enter 'hit' or 'stay'...");
-                break;
+    private static boolean processPlayerChoice(Player player, List<Card> deck, List<Card> discardPile, boolean showingAnAce, int turn) {
+        Hand hand = player.getHand();
+        boolean playerTurnOngoing = true;
+        while (playerTurnOngoing) {
+            System.out.print("""
+                What would you like to do?
+                
+                [1] Hit
+                [2] Stay
+                """);
+            if (turn == 1 && showingAnAce) {
+                System.out.println("[3] Take out insurance");
+
+                System.out.print("\nEnter choice: ");
+                int userChoice = Inputs.getInt();
+                switch (userChoice) {
+                    case 1:
+                        hand.addRandomCardToHand(deck, discardPile);
+                        playerTurnOngoing = false;
+                        break;
+                    case 2:
+                        return false;
+                    case 3:
+                        PointsInteractionHandler.processInsurance(player);
+                        return false;
+                    default:
+                        System.out.println("That's not a valid choice, please choose from one of the options...");
+                        break;
+                }
+            } else {
+                System.out.print("\nEnter choice: ");
+                int userChoice = Inputs.getInt();
+                switch (userChoice) {
+                    case 1:
+                        hand.addRandomCardToHand(deck, discardPile);
+                        playerTurnOngoing = false;
+                        break;
+                    case 2:
+                        return false;
+                    default:
+                        System.out.println("That's not a valid choice, please choose from one of the options...");
+                        break;
+                }
+            }
         }
         return true;
     }
@@ -84,11 +116,11 @@ public class GameInteractionHandler {
             System.out.println("\n\n\n\n\n\n\n\n\n\n|\tHouse\t|");
             houseHand.displayCards();
             if (houseHand.checkIfBlackJack(turn)) {
+                PointsInteractionHandler.processHouseBlackJack();
                 System.out.println("The House got Blackjack!");
-                System.out.print("Press Enter to continue...");
-                Inputs.awaitInput();
                 break;
             } else {
+                PointsInteractionHandler.processHouseNoBlackJack();
                 if (houseHand.calculateHand() < 17) {
                     houseHand.addRandomCardToHand(deck, discardPile);
                     turn++;

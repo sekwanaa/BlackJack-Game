@@ -4,6 +4,8 @@ import com.pluralsight.Models.Player;
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
 
+import java.util.Optional;
+
 import static com.pluralsight.UserInterfaces.Screen.players;
 
 
@@ -56,6 +58,47 @@ public class PointsInteractionHandler {
                     break;
                 }
 
+            }
+        }
+    }
+
+    public static void processInsurance(Player player) {
+        while (true) {
+            Utilities.clearConsole();
+            System.out.println(Utilities.centerMessage(" Type 'x' at anytime to cancel ", 46, '='));
+            System.out.print("How much would you like to put down as insurance?: ");
+            Optional<Integer> insuranceAmount = Inputs.getIntWithXCancellation();
+
+            if (insuranceAmount.isEmpty()) break;
+
+            if (insuranceAmount.get() > player.getBetAmount() / 2 || insuranceAmount.get() < 0) {
+                System.out.printf("You can only place a bet between 0 and %.2f\n", player.getBetAmount() / 2);
+            } else {
+                player.setInsuranceBetAmount(insuranceAmount.get());
+                break;
+            }
+        }
+    }
+
+    public static void processHouseBlackJack() {
+        for (Player player : players) {
+            if (player.getInsuranceBetAmount() != 0) {
+                player.processInsuranceWin();
+            }
+        }
+    }
+
+    public static void processHouseBlackJack(Player player) {
+        if (player.getInsuranceBetAmount() != 0) {
+            player.processInsuranceWin();
+        }
+    }
+
+    public static void processHouseNoBlackJack() {
+        for (Player player : players) {
+            if (player.getInsuranceBetAmount() != 0) {
+                player.processInsuranceLoss();
+                player.setInsuranceBetAmount(0);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.pluralsight.Utilities;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Inputs {
@@ -43,6 +44,18 @@ public class Inputs {
         int input = scanner.nextInt();
         scanner.nextLine(); //eat CRLF
         return input;
+    }
+
+    public static Optional<Integer> getIntWithXCancellation() {
+        ensureScannerIsOpen();
+        if (!scanner.hasNextInt()) {
+            String cancellation = scanner.nextLine();
+
+            if (cancellation.equalsIgnoreCase("x")) return Optional.empty();
+        }
+        int input = scanner.nextInt();
+        scanner.nextLine(); //eat CRLF
+        return Optional.of(input);
     }
 
     public static double getDouble() {

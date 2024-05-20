@@ -8,6 +8,7 @@ public class Player {
     private boolean busted;
     private double points;
     private double originalBetAmount;
+    private double insuranceBetAmount;
 
     public Player(String name) {
         this.name = name;
@@ -42,6 +43,13 @@ public class Player {
         this.points -= originalBetAmount;
     }
 
+    public void processInsuranceLoss() { this.points -= insuranceBetAmount; }
+
+    public void processInsuranceWin() {
+        this.points += 2 * insuranceBetAmount;
+        this.insuranceBetAmount = 0;
+    }
+
     //Getters and Setters
     public int getScore() {
         return hand.calculateHand();
@@ -73,5 +81,17 @@ public class Player {
 
     public double getBetAmount() {
         return originalBetAmount;
+    }
+
+    public void setOriginalBetAmount(double originalBetAmount) {
+        this.originalBetAmount = originalBetAmount;
+    }
+
+    public double getInsuranceBetAmount() {
+        return insuranceBetAmount;
+    }
+
+    public void setInsuranceBetAmount(double insuranceBetAmount) {
+        this.insuranceBetAmount = insuranceBetAmount;
     }
 }

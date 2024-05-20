@@ -1,11 +1,13 @@
 package com.pluralsight.InteractionHandlers;
 
 import com.pluralsight.Models.Player;
-import com.pluralsight.UserInterfaces.Screen;
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
 
-public class PointsInteractionHandler extends Screen {
+import static com.pluralsight.UserInterfaces.Screen.players;
+
+
+public class PointsInteractionHandler {
     private PointsInteractionHandler() {
     }
 

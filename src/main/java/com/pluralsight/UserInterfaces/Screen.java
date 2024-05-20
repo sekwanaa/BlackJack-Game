@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Screen {
-    protected static List<Player> players = new ArrayList<>();
+    public static List<Player> players = new ArrayList<>();
 
     //Methods
 

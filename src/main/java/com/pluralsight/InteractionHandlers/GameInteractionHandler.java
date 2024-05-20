@@ -1,6 +1,5 @@
 package com.pluralsight.InteractionHandlers;
 
-import com.pluralsight.UserInterfaces.Screen;
 import com.pluralsight.Models.*;
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
@@ -10,8 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.pluralsight.UserInterfaces.Screen.players;
 
-public class GameInteractionHandler extends Screen {
+public class GameInteractionHandler {
 
     public static void playersPlayOutTurn(Player house, List<Card> deck) {
         for (Player player : players) {
@@ -206,6 +206,12 @@ public class GameInteractionHandler extends Screen {
         for (Player brokePlayer : brokePlayers) {
             players.remove(brokePlayer);
         }
+
+        if (players.isEmpty()) {
+            System.out.println("\n\nEveryone has lost their money...\n");
+            System.exit(0);
+        }
+
         for (Player player : players) {
             player.getHand().clearHand();
             player.setBusted(false);

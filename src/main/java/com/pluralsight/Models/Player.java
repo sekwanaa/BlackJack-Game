@@ -5,11 +5,8 @@ import java.util.List;
 public class Player {
     private final String name;
     private final Hand hand;
-    private boolean busted;
-    private double points;
-    private double originalBetAmount;
-    private double insuranceBetAmount;
-
+    private boolean doneTurn, busted;
+    private double originalBetAmount, insuranceBetAmount, points;
     public Player(String name) {
         this.name = name;
         this.hand = new Hand();
@@ -17,12 +14,12 @@ public class Player {
     }
 
     //Methods
+
     public void createHand(List<Card> deck, List<Card> discardPile) {
         //Creating the house hand
         hand.addRandomCardToHand(deck, discardPile);
         hand.addRandomCardToHand(deck, discardPile);
     }
-
     public void bet(double betAmount) {
         this.originalBetAmount = betAmount;
     }
@@ -51,10 +48,10 @@ public class Player {
     }
 
     //Getters and Setters
+
     public int getScore() {
         return hand.calculateHand();
     }
-
     public String getName() {
         return name;
     }
@@ -93,5 +90,13 @@ public class Player {
 
     public void setInsuranceBetAmount(double insuranceBetAmount) {
         this.insuranceBetAmount = insuranceBetAmount;
+    }
+
+    public boolean isDoneTurn() {
+        return doneTurn;
+    }
+
+    public void setDoneTurn(boolean doneTurn) {
+        this.doneTurn = doneTurn;
     }
 }

@@ -33,7 +33,6 @@ public class Screen {
 
     public void displayGameScreen() {
         //create an array of shuffled cards
-//TODO      Maybe create 5 decks and use 5 decks so that players can't count cards.
         List<Card> deck = Card.createDeck();
         List<Card> discardPile = new ArrayList<>();
 

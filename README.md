@@ -43,7 +43,8 @@ java -cp bin com.yourusername.blackjack.Blackjack
 
 ### Commands
 * **'hit'** - Draw another card.
-* **'doneTurn'** - End your turn.
+* **'stay'** - End your turn.
+* **'insurance'** - Take insurance if the dealer shows an Ace.
 
   <details>
   
@@ -51,7 +52,6 @@ java -cp bin com.yourusername.blackjack.Blackjack
   
   * **'double'** - Double your bet, draw one more card, and end your turn.
   * **'split'** - Split your hand into two hands (if you have a pair).
-  * **'insurance'** - Take insurance if the dealer shows an Ace.
       
   </details>
 

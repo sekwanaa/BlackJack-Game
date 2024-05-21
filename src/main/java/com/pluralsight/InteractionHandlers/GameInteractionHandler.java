@@ -11,16 +11,24 @@ import static com.pluralsight.UserInterfaces.Screen.players;
 public class GameInteractionHandler {
 
     public static void playersPlayOutTurn(Player house, List<Card> deck, List<Card> discardPile) {
-        for (Player player : players) {
-            if (player.getPoints() <= 0) {
-                System.out.println("\n\nYou've lost all your money, loser.\n\n");
-                continue;
-            }
-            Hand hand = player.getHand();
+        int turn = 1;
+        boolean allPlayersDone;
+        do {
+            allPlayersDone = true;
 
-            int turn = 1;
-            boolean playing = true;
-            while (playing) {
+            for (Player player : players) {
+                if (player.getPoints() <= 0) {
+                    if (!player.isDoneTurn()) {
+                        System.out.println("\n\nYou've lost all your money, loser.\n\n");
+                        continue;
+                    }
+                }
+
+                if (player.isDoneTurn()) continue;
+
+                Hand hand = player.getHand();
+
+
                 Utilities.clearConsole();
                 System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
                 boolean showingAnAce = house.getHand().displayHouseCards();
@@ -34,37 +42,43 @@ public class GameInteractionHandler {
                 if (hand.checkIfBlackJack(turn)) {
                     System.out.println("You've got Blackjack!");
                     player.processBlackJack();
+                    player.setDoneTurn(true);
                     System.out.print("Press Enter to continue...");
                     Inputs.awaitInput();
-                    break;
+                    continue;
                 }
 
                 if (hand.calculateHand() == 21) {
                     System.out.println("You've got 21!");
+                    player.setDoneTurn(true);
                     System.out.print("Press Enter to continue...");
                     Inputs.awaitInput();
-                    break;
+                    continue;
                 }
 
-                playing = processPlayerChoice(player, deck, discardPile, showingAnAce, turn);
+                boolean playing = processPlayerChoice(player, deck, discardPile, showingAnAce, turn);
 
                 if (hand.checkIfBusted()) {
                     hand.displayCards();
                     player.setBusted(true);
+                    player.setDoneTurn(true);
                     System.out.println("Busted!");
                     System.out.print("Press Enter to continue...");
                     Inputs.awaitInput();
-                    break;
+                } else if (!playing) {
+                    player.setDoneTurn(true);
+                } else {
+                    allPlayersDone = false;
                 }
-                turn++;
+
             }
-        }
+            turn++;
+        } while (!allPlayersDone);
     }
 
     private static boolean processPlayerChoice(Player player, List<Card> deck, List<Card> discardPile, boolean showingAnAce, int turn) {
         Hand hand = player.getHand();
-        boolean playerTurnOngoing = true;
-        while (playerTurnOngoing) {
+        while (true) {
             System.out.print("""
                 What would you like to do?
                 
@@ -79,8 +93,7 @@ public class GameInteractionHandler {
                 switch (userChoice) {
                     case 1:
                         hand.addRandomCardToHand(deck, discardPile);
-                        playerTurnOngoing = false;
-                        break;
+                        return true;
                     case 2:
                         return false;
                     case 3:
@@ -96,8 +109,7 @@ public class GameInteractionHandler {
                 switch (userChoice) {
                     case 1:
                         hand.addRandomCardToHand(deck, discardPile);
-                        playerTurnOngoing = false;
-                        break;
+                        return true;
                     case 2:
                         return false;
                     default:
@@ -106,7 +118,6 @@ public class GameInteractionHandler {
                 }
             }
         }
-        return true;
     }
 
     public static void housePlaysOutTurn(Player house, List<Card> deck, List<Card> discardPile) {
@@ -234,6 +245,7 @@ public class GameInteractionHandler {
         for (Player player : players) {
             player.getHand().clearHand();
             player.setBusted(false);
+            player.setDoneTurn(false);
         }
 
         deck.addAll(discardPile);

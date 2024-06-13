@@ -20,7 +20,20 @@ public class Screen {
         System.out.println("\n\n\n\n\n+--------Welcome to Sekwanaa's Casino--------+");
         System.out.println("|==============You are playing:==============|");
         System.out.println("+------------------BlackJack-----------------+\n");
+
+        displayPlayerAddScreen();
+
+        displayPointsScreen();
+
+        boolean isPlaying = true;
+        while (isPlaying) {
+            //Game screen to actually play out the game of blackjack
+            displayGameScreen();
+
+            isPlaying = GameInteractionHandler.checkIfWantsToPlayAgain();
+        }
     }
+
     public void displayPlayerAddScreen() {
         System.out.println(Text.centerMessage("Enter up to 4 players", 46, ' '));
         Text.createLineofChars(46, '~');

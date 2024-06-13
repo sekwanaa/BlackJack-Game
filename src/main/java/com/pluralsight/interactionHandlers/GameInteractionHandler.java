@@ -1,12 +1,12 @@
-package com.pluralsight.InteractionHandlers;
+package com.pluralsight.interactionHandlers;
 
-import com.pluralsight.Models.*;
-import com.pluralsight.Utilities.Inputs;
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.models.*;
+import com.pluralsight.util.Inputs;
+import com.pluralsight.util.Text;
 
 import java.util.*;
 
-import static com.pluralsight.UserInterfaces.Screen.players;
+import static com.pluralsight.ui.Screen.players;
 
 public class GameInteractionHandler {
 
@@ -29,13 +29,13 @@ public class GameInteractionHandler {
                 Hand hand = player.getHand();
 
 
-                Utilities.clearConsole();
-                System.out.println(Utilities.centerMessage("|\tHouse\t|", 25, ' '));
+                Text.clearConsole();
+                System.out.println(Text.centerMessage("|\tHouse\t|", 25, ' '));
                 boolean showingAnAce = house.getHand().displayHouseCards();
 
-                Utilities.createLineofChars(25, '=');
-                System.out.println(Utilities.centerMessage(String.format("| %s : $%.2f |", player.getName(), player.getPoints()), 25, ' '));
-                System.out.println(Utilities.centerMessage(String.format("Current Bet: $%.2f", player.getBetAmount()), 25, ' '));
+                Text.createLineofChars(25, '=');
+                System.out.println(Text.centerMessage(String.format("| %s : $%.2f |", player.getName(), player.getPoints()), 25, ' '));
+                System.out.println(Text.centerMessage(String.format("Current Bet: $%.2f", player.getBetAmount()), 25, ' '));
 
                 hand.displayCards();
 
@@ -175,13 +175,13 @@ public class GameInteractionHandler {
         if (winnersOrDraws == null) { //if house won
             System.out.print("\n\nPress ENTER to view winners...");
             Inputs.awaitInput();
-            Utilities.clearConsole();
+            Text.clearConsole();
             System.out.printf("""
                     The winner is: %s with %d points
 
                     """, house.getName(), house.getHand().calculateHand());
 
-            Utilities.createLineofChars(40, '=');
+            Text.createLineofChars(40, '=');
 
             for (Player player : players) {
                 if (player.isBusted()) {
@@ -195,7 +195,7 @@ public class GameInteractionHandler {
             players.add(house);
             System.out.print("\n\nPress ENTER to view winners...");
             Inputs.awaitInput();
-            Utilities.clearConsole();
+            Text.clearConsole();
             for (Map.Entry<Player, String> playerStringEntry : winnersOrDraws.entrySet())
                 if (playerStringEntry.getValue().equals("draw")) {
                     System.out.printf("""
@@ -207,7 +207,7 @@ public class GameInteractionHandler {
                             """, playerStringEntry.getKey().getName(), playerStringEntry.getKey().getHand().calculateHand());
 
             System.out.println();
-            System.out.println(Utilities.centerMessage(" Points ", 46, '='));
+            System.out.println(Text.centerMessage(" Points ", 46, '='));
 
             for (Player player : players) {
                 if (player.isBusted()) {

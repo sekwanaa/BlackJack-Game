@@ -1,12 +1,12 @@
-package com.pluralsight.InteractionHandlers;
+package com.pluralsight.interactionHandlers;
 
-import com.pluralsight.Models.Player;
-import com.pluralsight.Utilities.Inputs;
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.models.Player;
+import com.pluralsight.util.Inputs;
+import com.pluralsight.util.Text;
 
 import java.util.Optional;
 
-import static com.pluralsight.UserInterfaces.Screen.players;
+import static com.pluralsight.ui.Screen.players;
 
 
 public class PointsInteractionHandler {
@@ -17,9 +17,9 @@ public class PointsInteractionHandler {
 
     public static void getBuyIns() {
         for (Player player : players) {
-            Utilities.clearConsole();
-            System.out.println(Utilities.centerMessage(player.getName(), 46, ' '));
-            Utilities.createLineofChars(46, '=');
+            Text.clearConsole();
+            System.out.println(Text.centerMessage(player.getName(), 46, ' '));
+            Text.createLineofChars(46, '=');
             System.out.print("How much would you like to 'Buy in' with?\n\nEnter 'Buy in' here: ");
             int wageredPoints = Inputs.getInt();
             PointsInteractionHandler.processStartingPoints(player, wageredPoints);
@@ -37,9 +37,9 @@ public class PointsInteractionHandler {
                 continue;
             }
 
-            Utilities.clearConsole();
-            System.out.println(Utilities.centerMessage(String.format("%s", player.getName()), 46, ' '));
-            Utilities.createLineofChars(46, '=');
+            Text.clearConsole();
+            System.out.println(Text.centerMessage(String.format("%s", player.getName()), 46, ' '));
+            Text.createLineofChars(46, '=');
 
             while (true) {
                 System.out.printf("""
@@ -64,8 +64,8 @@ public class PointsInteractionHandler {
 
     public static void processInsurance(Player player) {
         while (true) {
-            Utilities.clearConsole();
-            System.out.println(Utilities.centerMessage(" Type 'x' at anytime to cancel ", 46, '='));
+            Text.clearConsole();
+            System.out.println(Text.centerMessage(" Type 'x' at anytime to cancel ", 46, '='));
             System.out.print("How much would you like to put down as insurance?: ");
             Optional<Integer> insuranceAmount = Inputs.getIntWithXCancellation();
 

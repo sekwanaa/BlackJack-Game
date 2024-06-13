@@ -1,12 +1,12 @@
-package com.pluralsight.InteractionHandlers;
+package com.pluralsight.interactionHandlers;
 
-import com.pluralsight.Models.Card;
-import com.pluralsight.Models.Player;
-import com.pluralsight.Utilities.Inputs;
+import com.pluralsight.models.Card;
+import com.pluralsight.models.Player;
+import com.pluralsight.util.Inputs;
 
 import java.util.List;
 
-import static com.pluralsight.UserInterfaces.Screen.players;
+import static com.pluralsight.ui.Screen.players;
 
 public class PlayerInteractionHandler{
     private PlayerInteractionHandler() {

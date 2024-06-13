@@ -1,6 +1,6 @@
-package com.pluralsight.InteractionHandlers;
+package com.pluralsight.interactionHandlers;
 
-import com.pluralsight.Models.Player;
+import com.pluralsight.models.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,8 +1,8 @@
 package com.pluralsight;
 
-import com.pluralsight.InteractionHandlers.GameInteractionHandler;
-import com.pluralsight.UserInterfaces.Screen;
-import com.pluralsight.Utilities.Inputs;
+import com.pluralsight.interactionHandlers.GameInteractionHandler;
+import com.pluralsight.ui.Screen;
+import com.pluralsight.util.Inputs;
 
 public class Main {
     public static void main(String[] args) {

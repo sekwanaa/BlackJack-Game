@@ -1,8 +1,8 @@
-package com.pluralsight.Utilities;
+package com.pluralsight.util;
 
-public class Utilities {
+public class Text {
 
-    private Utilities() {}
+    private Text() {}
 
     //Text Utilities
     public static String centerMessage(String message, int width, char padChar) {

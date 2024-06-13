@@ -1,11 +1,11 @@
-package com.pluralsight.UserInterfaces;
+package com.pluralsight.ui;
 
-import com.pluralsight.InteractionHandlers.GameInteractionHandler;
-import com.pluralsight.InteractionHandlers.PlayerInteractionHandler;
-import com.pluralsight.InteractionHandlers.PointsInteractionHandler;
-import com.pluralsight.Models.Card;
-import com.pluralsight.Models.Player;
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.interactionHandlers.GameInteractionHandler;
+import com.pluralsight.interactionHandlers.PlayerInteractionHandler;
+import com.pluralsight.interactionHandlers.PointsInteractionHandler;
+import com.pluralsight.models.Card;
+import com.pluralsight.models.Player;
+import com.pluralsight.util.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class Screen {
         System.out.println("+------------------BlackJack-----------------+\n");
     }
     public void displayPlayerAddScreen() {
-        System.out.println(Utilities.centerMessage("Enter up to 4 players", 46, ' '));
-        Utilities.createLineofChars(46, '~');
+        System.out.println(Text.centerMessage("Enter up to 4 players", 46, ' '));
+        Text.createLineofChars(46, '~');
         PlayerInteractionHandler.addPlayers();
     }
 

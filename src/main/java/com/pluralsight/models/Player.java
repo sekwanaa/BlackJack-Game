@@ -3,12 +3,21 @@ package com.pluralsight.models;
 import java.util.List;
 
 public class Player {
+    private int user_id;
     private final String name;
     private final Hand hand;
     private boolean doneTurn, busted;
     private double originalBetAmount, insuranceBetAmount, points;
+
     public Player(String name) {
         this.name = name;
+        this.hand = new Hand();
+        this.busted = false;
+    }
+
+    public Player(int user_id, String name) {
+        this.name = name;
+        this.user_id = user_id;
         this.hand = new Hand();
         this.busted = false;
     }
@@ -72,7 +81,7 @@ public class Player {
         return this.points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(double points) {
         this.points = points;
     }
 
@@ -98,5 +107,9 @@ public class Player {
 
     public void setDoneTurn(boolean doneTurn) {
         this.doneTurn = doneTurn;
+    }
+
+    public int getUser_id() {
+        return user_id;
     }
 }

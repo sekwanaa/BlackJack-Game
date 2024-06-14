@@ -1,5 +1,6 @@
 package com.pluralsight.interactionHandlers;
 
+import com.pluralsight.dataManagers.UserDAO;
 import com.pluralsight.models.*;
 import com.pluralsight.util.Inputs;
 import com.pluralsight.util.Text;
@@ -43,7 +44,6 @@ public class GameInteractionHandler {
                     System.out.println("You've got Blackjack!");
                     player.processBlackJack();
                     player.setDoneTurn(true);
-                    System.out.print("Press Enter to continue...");
                     Inputs.awaitInput();
                     continue;
                 }
@@ -51,7 +51,6 @@ public class GameInteractionHandler {
                 if (hand.calculateHand() == 21) {
                     System.out.println("You've got 21!");
                     player.setDoneTurn(true);
-                    System.out.print("Press Enter to continue...");
                     Inputs.awaitInput();
                     continue;
                 }
@@ -63,7 +62,6 @@ public class GameInteractionHandler {
                     player.setBusted(true);
                     player.setDoneTurn(true);
                     System.out.println("Busted!");
-                    System.out.print("Press Enter to continue...");
                     Inputs.awaitInput();
                 } else if (!playing) {
                     player.setDoneTurn(true);
@@ -136,7 +134,7 @@ public class GameInteractionHandler {
                     houseHand.addRandomCardToHand(deck, discardPile);
                     turn++;
                     System.out.print("Press Enter to play dealer next card...");
-                    Inputs.awaitInput();
+                    Inputs.awaitInputNoMessage();
                 } else {
                     break;
                 }
@@ -173,7 +171,6 @@ public class GameInteractionHandler {
 
     public static void displayWinners(Map<Player, String> winnersOrDraws, Player house) {
         if (winnersOrDraws == null) { //if house won
-            System.out.print("\n\nPress ENTER to view winners...");
             Inputs.awaitInput();
             Text.clearConsole();
             System.out.printf("""
@@ -193,7 +190,6 @@ public class GameInteractionHandler {
             }
         } else { //If house didn't win
             players.add(house);
-            System.out.print("\n\nPress ENTER to view winners...");
             Inputs.awaitInput();
             Text.clearConsole();
             for (Map.Entry<Player, String> playerStringEntry : winnersOrDraws.entrySet())
@@ -263,6 +259,12 @@ public class GameInteractionHandler {
                 case "y":
                     return true;
                 case "n":
+                    for (Player player : players) {
+                        if (player.getUser_id() != 0) {
+                            UserDAO userDAO = new UserDAO();
+                            userDAO.updateUser(player.getUser_id(), player.getName(), "points", player.getPoints());
+                        }
+                    }
                     return false;
                 default:
                     System.out.println("That is not a valid choice, try again.");

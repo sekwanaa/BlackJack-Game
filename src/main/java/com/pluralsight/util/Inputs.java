@@ -69,7 +69,18 @@ public class Inputs {
         return input;
     }
 
+    public static void erroneousInput() {
+        ensureScannerIsOpen();
+        awaitInput();
+    }
+
     public static void awaitInput() {
+        ensureScannerIsOpen();
+        System.out.print("Press ENTER to continue...");
+        scanner.nextLine();
+    }
+
+    public static void awaitInputNoMessage() {
         ensureScannerIsOpen();
         scanner.nextLine();
     }

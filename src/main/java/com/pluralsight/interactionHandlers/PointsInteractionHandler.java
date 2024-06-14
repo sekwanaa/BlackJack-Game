@@ -20,13 +20,22 @@ public class PointsInteractionHandler {
             Text.clearConsole();
             System.out.println(Text.centerMessage(player.getName(), 46, ' '));
             Text.createLineofChars(46, '=');
-            System.out.print("How much would you like to 'Buy in' with?\n\nEnter 'Buy in' here: ");
-            int wageredPoints = Inputs.getInt();
-            PointsInteractionHandler.processStartingPoints(player, wageredPoints);
+            if (player.getPoints() > 0) {
+                double currentPoints = player.getPoints();
+                System.out.println("Current points: " + currentPoints);
+                System.out.print("\nHow much would you like to add to your current points?: >");
+
+                double additionalPoints = Inputs.getDouble();
+                player.setPoints(currentPoints + additionalPoints);
+            } else {
+                System.out.print("How much would you like to 'Buy in' with?\n\nEnter 'Buy in' here: ");
+                double wageredPoints = Inputs.getDouble();
+                PointsInteractionHandler.processStartingPoints(player, wageredPoints);
+            }
         }
     }
 
-    private static void processStartingPoints(Player player, int wageredPoints) {
+    private static void processStartingPoints(Player player, double wageredPoints) {
         player.setPoints(wageredPoints);
     }
 

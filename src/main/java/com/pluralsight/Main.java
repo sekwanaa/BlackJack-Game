@@ -9,7 +9,7 @@ public class Main {
             Inputs.openScanner();
 
             Screen screen = new Screen();
-            screen.displayWelcomeMessage();
+            screen.displayHomeScreen();
 
             Inputs.closeScanner();
         } catch (Exception e) {

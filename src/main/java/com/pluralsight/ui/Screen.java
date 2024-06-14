@@ -5,6 +5,7 @@ import com.pluralsight.interactionHandlers.PlayerInteractionHandler;
 import com.pluralsight.interactionHandlers.PointsInteractionHandler;
 import com.pluralsight.models.Card;
 import com.pluralsight.models.Player;
+import com.pluralsight.util.Inputs;
 import com.pluralsight.util.Text;
 
 import java.util.ArrayList;
@@ -15,26 +16,53 @@ public class Screen {
     public static List<Player> players = new ArrayList<>();
 
     //Methods
+    public void displayHomeScreen() {
+        displayWelcomeMessage();
 
-    public void displayWelcomeMessage() {
-        System.out.println("\n\n\n\n\n+--------Welcome to Sekwanaa's Casino--------+");
-        System.out.println("|==============You are playing:==============|");
-        System.out.println("+------------------BlackJack-----------------+\n");
+        System.out.print("""
+                Select an option
+                
+                [1] Play
+                
+                [0] Quit
+                
+                Enter choice: >""");
 
-        displayPlayerAddScreen();
+        String userChoice = Inputs.getString();
 
-        displayPointsScreen();
+        switch (userChoice) {
+            case "1" -> {displayPlayerAddScreen();
 
-        boolean isPlaying = true;
-        while (isPlaying) {
-            //Game screen to actually play out the game of blackjack
-            displayGameScreen();
+                displayPointsScreen();
 
-            isPlaying = GameInteractionHandler.checkIfWantsToPlayAgain();
+                boolean isPlaying = true;
+                while (isPlaying) {
+                    //Game screen to actually play out the game of blackjack
+                    displayGameScreen();
+
+                    isPlaying = GameInteractionHandler.checkIfWantsToPlayAgain();
+                }
+            }
+            case "0" -> System.exit(0);
+            default -> {
+                Inputs.erroneousInput();
+                displayHomeScreen();
+            }
         }
     }
 
+    public void displayWelcomeMessage() {
+        System.out.println("\n\n\n\n\n+--------Welcome to Sekwanaa's Casino--------+\n");
+
+
+
+    }
+
     public void displayPlayerAddScreen() {
+        Text.clearConsole();
+        System.out.println(Text.centerMessage(" You are playing: ", 46, '='));
+        System.out.println(Text.centerMessage(" BlackJack ", 46, '-'));
+        System.out.println();
         System.out.println(Text.centerMessage("Enter up to 4 players", 46, ' '));
         Text.createLineofChars(46, '~');
         PlayerInteractionHandler.addPlayers();
@@ -68,8 +96,5 @@ public class Screen {
 
         GameInteractionHandler.reset(house, deck, discardPile);
     }
-
-
-    //Getters and setters
 
 }
